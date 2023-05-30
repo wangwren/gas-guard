@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <jmxConfigurator/>
+    <!-- 根据实际情况修改变量 -->
+    <property name="app-name" value="gas-guard-server" />
+    <property name="dev-group-name" value="nvra" />
+    <conversionRule conversionWord="traceId" converterClass="com.gas.converter.ChannelGatewayLogTraceIdConverter"></conversionRule>
+    <!-- 根据实际情况修改变量 end-->
+
+    <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--本地开发写./-->
+        <file>/data/log/${app-name}/server.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/data/log/${app-name}/server.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%date{ISO8601}] [%level] %logger{80} [%thread] [%traceId] ${dev-group-name} ${app-name} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 用来设置日志的输入格式，使用“%+转换符”的方式，如果要输出”%”则必须使用”\”进行转义。-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %t %file:%line %X{traceId} -| %m%n</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!-- root -->
+    <!--本地开发时 ref改为STDOUT; 测试或线上改为fileAppender-->
+    <root level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
