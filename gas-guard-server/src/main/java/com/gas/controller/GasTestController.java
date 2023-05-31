@@ -1,5 +1,6 @@
 package com.gas.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.ResponseInfo;
 import com.gas.entity.GasTest;
 import com.gas.enums.ErrorCodeEnum;
@@ -43,4 +44,12 @@ public class GasTestController {
         return ResponseInfo.success(list);
     }
 
+
+    @GetMapping("/page")
+    public ResponseInfo pgae(HttpServletRequest servletRequest) {
+
+        Page<GasTest> page = gasTestService.page();
+
+        return ResponseInfo.success(page);
+    }
 }

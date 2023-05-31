@@ -1,5 +1,6 @@
 package com.gas.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.dao.GasTestDao;
 import com.gas.entity.GasTest;
 import com.gas.model.GasTestRequest;
@@ -24,5 +25,10 @@ public class GasTestServiceImpl implements GasTestService {
 
     public List<GasTest> list() {
         return gasTestDao.list();
+    }
+
+    @Override
+    public Page<GasTest> page() {
+        return gasTestDao.page();
     }
 }

@@ -1,6 +1,6 @@
 package com.gas.dao;
 
-import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.dao.mapper.GasTestMapper;
 import com.gas.entity.GasTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@DS("gas")
 public class GasTestDao {
 
     @Autowired
@@ -21,5 +20,12 @@ public class GasTestDao {
 
     public List<GasTest> list() {
         return mapper.selectList(null);
+    }
+
+    public Page<GasTest> page() {
+        //查询第一页，每页两条
+        Page<GasTest> page = new Page<>(1,2);
+        Page<GasTest> gasTestPage = mapper.selectPage(page, null);
+        return gasTestPage;
     }
 }
