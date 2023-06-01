@@ -11,6 +11,9 @@ public enum ErrorCodeEnum {
     INVALID_REASON_TOO_LONG(10005, "字数过多"),
     UNABLE_IN_CURRENT_STATUS(10006, "当前状态无法注销"),
     USER_NOT_FOUND(10007, "用户不存在"),
+    USER_PASSWORD_ERROR(10008, "用户名或密码错误"),
+
+    NOT_PERMIIIONS(403, "暂无权限"),
 
     RESOURCE_NOT_FOUND(40001, "资源不存在"),
     RELATED_RESOURCE_NOT_FOUND(40002, "无法找到相关资源");

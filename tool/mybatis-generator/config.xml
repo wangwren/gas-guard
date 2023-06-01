@@ -35,6 +35,11 @@
                              targetPackage="com.gas.dao.mapper" targetProject="../../gas-guard-datasource/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
-        <table tableName="gas_test" domainObjectName="GasTest" />
+        <!--<table tableName="gas_test" domainObjectName="GasTest" />-->
+        <!--<table tableName="users" domainObjectName="Users" />-->
+        <!--<table tableName="roles" domainObjectName="Roles" />-->
+        <!--<table tableName="menu_permissions" domainObjectName="MenuPermissions" />-->
+<!--        <table tableName="user_roles" domainObjectName="UserRoles" />-->
+        <table tableName="role_menu_permissions" domainObjectName="RoleMenuPermissions" />
     </context>
 </generatorConfiguration>

@@ -7,6 +7,7 @@ import com.gas.enums.ErrorCodeEnum;
 import com.gas.model.GasTestRequest;
 import com.gas.service.GasTestService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class GasTestController {
     @Autowired
     private GasTestService gasTestService;
 
+    @RequiresPermissions("document:read")
     @PostMapping("/byId")
     public ResponseInfo getGasTestById(@RequestBody GasTestRequest request, HttpServletRequest servletRequest) {
 
@@ -36,6 +38,7 @@ public class GasTestController {
     }
 
 
+    @RequiresPermissions("document:write")
     @GetMapping("/list")
     public ResponseInfo list(HttpServletRequest servletRequest) {
 
@@ -45,6 +48,7 @@ public class GasTestController {
     }
 
 
+    @RequiresPermissions("document:delete")
     @GetMapping("/page")
     public ResponseInfo pgae(HttpServletRequest servletRequest) {
 

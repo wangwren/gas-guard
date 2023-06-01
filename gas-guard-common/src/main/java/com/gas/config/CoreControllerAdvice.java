@@ -4,6 +4,8 @@ import com.gas.common.ResponseInfo;
 import com.gas.enums.ErrorCodeEnum;
 import com.gas.exception.CommonException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,6 +38,20 @@ public class CoreControllerAdvice {
         log.error("exception, url={},  ex", this.doURILog(), ex);
         return ResponseInfo.error();
     }
+
+    /**
+     * 权限校验异常处理
+     *
+     * @param ex 系统异常
+     * @return 统一返回内容数据
+     */
+    @ResponseBody
+    @ExceptionHandler(value = UnauthorizedException.class)
+    public ResponseInfo errorHandler(UnauthorizedException ex) {
+        log.error("exception, url={},  ex", this.doURILog(), ex);
+        return ResponseInfo.error(HttpStatus.FORBIDDEN);
+    }
+
 
     /**
      * 接口校验异常捕捉处理
