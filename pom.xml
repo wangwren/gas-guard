@@ -131,5 +131,12 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.8.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+
     </dependencies>
 </project>
