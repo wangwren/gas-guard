@@ -6,6 +6,8 @@ import com.gas.enums.ErrorCodeEnum;
 import com.gas.model.LoginRequest;
 import com.gas.model.LoginResponse;
 import com.gas.service.UsersService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -17,12 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api("用户相关接口")
 @RestController
 public class UserController {
 
     @Autowired
     private UsersService usersService;
 
+    @ApiOperation("登录接口")
     @PostMapping("/login")
     public ResponseInfo login(@RequestBody @Validated LoginRequest request) {
 
@@ -44,6 +48,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation("登出接口")
     @PostMapping("/logout")
     public ResponseInfo logout() {
         Subject currentUser = SecurityUtils.getSubject();

@@ -31,6 +31,11 @@ public class ShiroConfig {
         factoryBean.setSecurityManager(securityManager);
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/login", "anon");
+        // 开放Swagger文档访问接口
+        filterChainDefinitionMap.put("/swagger-ui/**", "anon");
+        filterChainDefinitionMap.put("/v3/api-docs/**", "anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        filterChainDefinitionMap.put("/webjars/**", "anon");
         //filterChainDefinitionMap.put("/gas/test/download", "anon");
         filterChainDefinitionMap.put("/**", "authc");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

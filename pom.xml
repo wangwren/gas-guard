@@ -98,7 +98,6 @@
                 <artifactId>httpclient</artifactId>
                 <version>4.5.3</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -138,5 +137,11 @@
             <version>2.2.3</version>
         </dependency>
 
+        <!--swagger3-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
 </project>
