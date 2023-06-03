@@ -41,6 +41,7 @@
         <!--<table tableName="menu_permissions" domainObjectName="MenuPermissions" />-->
 <!--        <table tableName="user_roles" domainObjectName="UserRoles" />-->
 <!--        <table tableName="role_menu_permissions" domainObjectName="RoleMenuPermissions" />-->
-        <table tableName="data_dict" domainObjectName="DataDict" />
+<!--        <table tableName="data_dict" domainObjectName="DataDict" />-->
+        <table tableName="warn_type" domainObjectName="WarnType" />
     </context>
 </generatorConfiguration>
