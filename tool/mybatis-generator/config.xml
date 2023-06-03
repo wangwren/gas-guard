@@ -40,6 +40,7 @@
         <!--<table tableName="roles" domainObjectName="Roles" />-->
         <!--<table tableName="menu_permissions" domainObjectName="MenuPermissions" />-->
 <!--        <table tableName="user_roles" domainObjectName="UserRoles" />-->
-        <table tableName="role_menu_permissions" domainObjectName="RoleMenuPermissions" />
+<!--        <table tableName="role_menu_permissions" domainObjectName="RoleMenuPermissions" />-->
+        <table tableName="data_dict" domainObjectName="DataDict" />
     </context>
 </generatorConfiguration>
