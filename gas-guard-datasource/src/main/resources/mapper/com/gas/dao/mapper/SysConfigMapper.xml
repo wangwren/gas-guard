@@ -2,19 +2,22 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gas.mapper.OfflineRuleMapper">
+<mapper namespace="com.gas.dao.mapper.SysConfigMapper">
 
-    <resultMap id="BaseResultMap" type="com.gas.entity.OfflineRule">
+    <resultMap id="BaseResultMap" type="com.gas.entity.SysConfig">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="typeName" column="type_name" jdbcType="VARCHAR"/>
-            <result property="offlineTime" column="offline_time" jdbcType="INTEGER"/>
+            <result property="sysName" column="sys_name" jdbcType="VARCHAR"/>
+            <result property="sysKey" column="sys_key" jdbcType="VARCHAR"/>
+            <result property="sysValue" column="sys_value" jdbcType="VARCHAR"/>
+            <result property="sysRemark" column="sys_remark" jdbcType="VARCHAR"/>
             <result property="enable" column="enable" jdbcType="TINYINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,type_name,offline_time,
-        enable,create_time,update_time
+        id,sys_name,sys_key,
+        sys_value,sys_remark,enable,
+        create_time,update_time
     </sql>
 </mapper>
