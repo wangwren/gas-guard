@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gas.dao.mapper.ShieldConfigMapper">
+
+    <resultMap id="BaseResultMap" type="com.gas.entity.ShieldConfig">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="pointName" column="point_name" jdbcType="VARCHAR"/>
+            <result property="deviceName" column="device_name" jdbcType="VARCHAR"/>
+            <result property="deviceNo" column="device_no" jdbcType="VARCHAR"/>
+            <result property="shieldDay" column="shield_day" jdbcType="INTEGER"/>
+            <result property="shieldTime" column="shield_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="enable" column="enable" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,point_name,device_name,
+        device_no,shield_day,shield_time,
+        status,remark,enable,
+        create_time,update_time
+    </sql>
+</mapper>
