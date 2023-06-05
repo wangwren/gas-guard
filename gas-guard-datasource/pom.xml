@@ -33,5 +33,10 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java}</version>
         </dependency>
+        <dependency>
+            <groupId>com.gas</groupId>
+            <artifactId>gas-guard-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
