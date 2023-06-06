@@ -36,27 +36,27 @@ public class MonitorPointController {
     @Autowired
     private FileDownloadUtils downloadUtils;
 
-    @ApiOperation("查询监测点位建档")
+    @ApiOperation("查询监测点位建档(不包含已通过)")
     @RequiresPermissions("archive:point:all")
     @PostMapping("/getPage")
     public ResponseInfo getMonitorPoint(@RequestBody MonitorPointRequest request, HttpServletRequest servletRequest) {
-        log.info("[监测点位建档] --- 查询监测点位建档 , request= {}", request);
+        log.info("[监测点位建档] --- 查询监测点位建档(不包含已通过) , request= {}", request);
 
         Page<MonitorPoint> monitorPointPage = monitorPointService.getMonitorPoint(request);
 
         return ResponseInfo.success(monitorPointPage);
     }
 
-//    @ApiOperation("根据条件查询监测点位建档")
-//    //@RequiresPermissions("document:read")
-//    @PostMapping("/getCond")
-//    public ResponseInfo getCond(@RequestBody MonitorPointRequest request, HttpServletRequest servletRequest) {
-//        log.info("[监测点位建档] --- 根据条件查询监测点位建档 , request= {}", request);
-//
-//        List<MonitorPoint> list = monitorPointService.getByCond(request);
-//
-//        return ResponseInfo.success(list);
-//    }
+    @ApiOperation("查询监测点位建档(不限制状态)")
+    //@RequiresPermissions("document:read")
+    @PostMapping("/getAll")
+    public ResponseInfo getAll(@RequestBody MonitorPointRequest request, HttpServletRequest servletRequest) {
+        log.info("[监测点位建档] --- 查询监测点位建档(不限制状态) , request= {}", request);
+
+        Page<MonitorPoint> monitorPointPage = monitorPointService.getMonitorPointAll(request);
+
+        return ResponseInfo.success(monitorPointPage);
+    }
 
     @ApiOperation("新增或修改监测点位建档")
     @PostMapping("/addOrUpdate")

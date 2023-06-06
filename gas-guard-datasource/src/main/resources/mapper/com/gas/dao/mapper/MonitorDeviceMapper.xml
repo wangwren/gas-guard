@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gas.dao.mapper.MonitorDeviceMapper">
+
+    <resultMap id="BaseResultMap" type="com.gas.entity.MonitorDevice">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="pointId" column="point_id" jdbcType="INTEGER"/>
+            <result property="pointName" column="point_name" jdbcType="VARCHAR"/>
+            <result property="organName" column="organ_name" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="province" column="province" jdbcType="VARCHAR"/>
+            <result property="deviceName" column="device_name" jdbcType="VARCHAR"/>
+            <result property="deviceNo" column="device_no" jdbcType="VARCHAR"/>
+            <result property="deviceType" column="device_type" jdbcType="VARCHAR"/>
+            <result property="installLocal" column="install_local" jdbcType="VARCHAR"/>
+            <result property="deviceFactory" column="device_factory" jdbcType="VARCHAR"/>
+            <result property="deviceModel" column="device_model" jdbcType="VARCHAR"/>
+            <result property="factoryTime" column="factory_time" jdbcType="TIMESTAMP"/>
+            <result property="sensorLife" column="sensor_life" jdbcType="INTEGER"/>
+            <result property="deviceLink" column="device_link" jdbcType="TINYINT"/>
+            <result property="repairCompany" column="repair_company" jdbcType="VARCHAR"/>
+            <result property="repairContract" column="repair_contract" jdbcType="VARCHAR"/>
+            <result property="repairMobile" column="repair_mobile" jdbcType="VARCHAR"/>
+            <result property="deviceStatus" column="device_status" jdbcType="VARCHAR"/>
+            <result property="archiveStatus" column="archive_status" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="enable" column="enable" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,point_id,point_name,
+        organ_name,address,province,
+        device_name,device_no,device_type,
+        install_local,device_factory,device_model,
+        factory_time,sensor_life,device_link,
+        repair_company,repair_contract,repair_mobile,
+        device_status,archive_status,remark,
+        creator,enable,create_time,
+        update_time
+    </sql>
+</mapper>

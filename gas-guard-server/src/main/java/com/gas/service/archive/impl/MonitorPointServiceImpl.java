@@ -2,8 +2,10 @@ package com.gas.service.archive.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.GlobalConstants;
+import com.gas.dao.MonitorDeviceDao;
 import com.gas.dao.MonitorPointDao;
 import com.gas.dto.MonitorPointDto;
+import com.gas.entity.MonitorDevice;
 import com.gas.entity.MonitorPoint;
 import com.gas.entity.Users;
 import com.gas.enums.ErrorCodeEnum;
@@ -28,6 +30,8 @@ public class MonitorPointServiceImpl implements MonitorPointService {
 
     @Autowired
     private MonitorPointDao monitorPointDao;
+    @Autowired
+    private MonitorDeviceDao monitorDeviceDao;
 
     @Override
     public Page<MonitorPoint> getMonitorPoint(MonitorPointRequest request) {
@@ -35,6 +39,14 @@ public class MonitorPointServiceImpl implements MonitorPointService {
         BeanUtils.copyProperties(request, monitorPoint);
 
         return monitorPointDao.selectPage(monitorPoint, request.getCurr(), request.getPageSize());
+    }
+
+    @Override
+    public Page<MonitorPoint> getMonitorPointAll(MonitorPointRequest request) {
+        MonitorPointDto monitorPoint = new MonitorPointDto();
+        BeanUtils.copyProperties(request, monitorPoint);
+
+        return monitorPointDao.selectPageAll(monitorPoint, request.getCurr(), request.getPageSize());
     }
 
     @Override
@@ -75,6 +87,13 @@ public class MonitorPointServiceImpl implements MonitorPointService {
         if (Objects.equals(monitorPoint.getArchiveStatus(), GlobalConstants.ARCHIVE_CHECK_STATUS)) {
             log.warn("删除监测点位建档，当前状态为 {} ,不允许删除", monitorPoint.getArchiveStatus());
             throw new CommonException(500, "待审核状态数据不允许删除");
+        }
+
+        //如果点位上绑有设备，不允许删除
+        List<MonitorDevice> monitorDevices = monitorDeviceDao.getByPointId(id);
+        if (CollectionUtils.isEmpty(monitorDevices)) {
+            log.warn("删除监测点位建档，当前点位绑有设备 ,不允许删除");
+            throw new CommonException(500, "当前点位绑有设备 ,不允许删除");
         }
 
         monitorPointDao.delById(monitorPoint);

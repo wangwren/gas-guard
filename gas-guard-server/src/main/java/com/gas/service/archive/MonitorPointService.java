@@ -16,4 +16,6 @@ public interface MonitorPointService {
     void delById(Integer id);
 
     void delBatchIds(List<Integer> ids);
+
+    Page<MonitorPoint> getMonitorPointAll(MonitorPointRequest request);
 }
