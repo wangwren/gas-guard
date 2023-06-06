@@ -37,7 +37,7 @@ public class MonitorPointController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("查询监测点位建档")
-    @RequiresPermissions("param:archive:all")
+    @RequiresPermissions("archive:point:all")
     @PostMapping("/getPage")
     public ResponseInfo getMonitorPoint(@RequestBody MonitorPointRequest request, HttpServletRequest servletRequest) {
         log.info("[监测点位建档] --- 查询监测点位建档 , request= {}", request);
@@ -112,10 +112,10 @@ public class MonitorPointController {
         return ResponseInfo.success();
     }
 
-    @ApiOperation("导出接口demo")
+    @ApiOperation("监测点位建档导出")
     @GetMapping("/download")
     public void downloadExcel(@RequestBody MonitorPointRequest request, HttpServletResponse response) throws IOException {
-        String fileName = "监测点位建档.xlsx";
+        String fileName = "monitor_point.xlsx";
         Page<MonitorPoint> monitorPointPage = monitorPointService.getMonitorPoint(request);
         List<MonitorPoint> records = monitorPointPage.getRecords();
         List<MonitorPointExcel> list = new ArrayList<>();

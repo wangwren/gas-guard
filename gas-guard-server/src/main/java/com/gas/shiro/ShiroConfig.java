@@ -36,7 +36,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/v3/api-docs/**", "anon");
         filterChainDefinitionMap.put("/swagger-resources/**", "anon");
         filterChainDefinitionMap.put("/webjars/**", "anon");
-        //filterChainDefinitionMap.put("/gas/test/download", "anon");
+        //filterChainDefinitionMap.put("/archive/monitorPoint/download", "anon");
         filterChainDefinitionMap.put("/**", "authc");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return factoryBean;

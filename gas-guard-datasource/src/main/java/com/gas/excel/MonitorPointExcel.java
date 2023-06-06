@@ -29,13 +29,13 @@ public class MonitorPointExcel {
     /**
      * 点位状态，正常;离线
      */
-    @ExcelProperty("点位类型")
+    @ExcelProperty("点位状态")
     private String pointStatus;
 
     /**
      * 档案状态，待提交;待审核;未通过
      */
-    @ExcelProperty("点位类型")
+    @ExcelProperty("档案状态")
     private String archiveStatus;
 
     /**
