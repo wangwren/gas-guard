@@ -77,17 +77,14 @@ public class MonitorPointDao {
     }
 
     public List<MonitorPoint> selectByIds(List<Integer> ids) {
-        QueryWrapper<MonitorPoint> wrapper = new QueryWrapper<>();
-        wrapper.in("id",ids);
-        List<MonitorPoint> monitorPoints = mapper.selectList(wrapper);
+        List<MonitorPoint> monitorPoints = mapper.selectBatchIds(ids);
         if (CollectionUtils.isEmpty(monitorPoints)) {
             return null;
         }
         return monitorPoints;
     }
 
-    public void delBatchIds(List<Integer> ids) {
-        List<MonitorPoint> monitorPoints = this.selectByIds(ids);
+    public void delBatchIds(List<MonitorPoint> monitorPoints) {
         for (MonitorPoint monitorPoint : monitorPoints) {
             monitorPoint.setEnable(false);
             mapper.updateById(monitorPoint);

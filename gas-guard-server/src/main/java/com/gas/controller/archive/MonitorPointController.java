@@ -63,7 +63,7 @@ public class MonitorPointController {
     public ResponseInfo addOrUpdate(@RequestBody MonitorPointRequest request, HttpServletRequest servletRequest) {
         log.info("[监测点位建档] --- 新增或修改监测点位建档 , request= {}", request);
 
-        //待审核和未通过 状态不允许修改
+        //待审核 状态不允许修改
         monitorPointService.addOrUpdate(request);
 
         return ResponseInfo.success();
@@ -91,7 +91,7 @@ public class MonitorPointController {
             return ResponseInfo.error(ErrorCodeEnum.INVALID_PARAM_VALUE);
         }
 
-        //待审核和未通过不允许删除
+        //待审核不允许删除
         monitorPointService.delById(request.getId());
 
         return ResponseInfo.success();

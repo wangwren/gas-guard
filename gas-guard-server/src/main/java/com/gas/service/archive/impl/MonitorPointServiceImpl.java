@@ -91,7 +91,7 @@ public class MonitorPointServiceImpl implements MonitorPointService {
 
         //如果点位上绑有设备，不允许删除
         List<MonitorDevice> monitorDevices = monitorDeviceDao.getByPointId(id);
-        if (CollectionUtils.isEmpty(monitorDevices)) {
+        if (!CollectionUtils.isEmpty(monitorDevices)) {
             log.warn("删除监测点位建档，当前点位绑有设备 ,不允许删除");
             throw new CommonException(500, "当前点位绑有设备 ,不允许删除");
         }
@@ -115,6 +115,13 @@ public class MonitorPointServiceImpl implements MonitorPointService {
             throw new CommonException(500, "待审核状态数据不允许删除");
         }
 
-        monitorPointDao.delBatchIds(ids);
+        //如果点位上绑有设备，不允许删除
+        List<MonitorDevice> monitorDevices = monitorDeviceDao.getByPointByPointIds(ids);
+        if (!CollectionUtils.isEmpty(monitorDevices)) {
+            log.warn("删除监测点位建档，当前点位绑有设备 ,不允许删除");
+            throw new CommonException(500, "当前点位绑有设备 ,不允许删除");
+        }
+
+        monitorPointDao.delBatchIds(list);
     }
 }

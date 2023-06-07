@@ -27,9 +27,21 @@ public class MonitorDeviceDao {
     @Autowired
     private MonitorPointMapper pointMapper;
 
+    /**
+     * 根据点位 id 查询设备
+     */
     public List<MonitorDevice> getByPointId(Integer id) {
         QueryWrapper<MonitorDevice> wrapper = new QueryWrapper<>();
         wrapper.eq("point_id", id);
+        wrapper.eq("enable", true);
+
+        List<MonitorDevice> monitorDevices = deviceMapper.selectList(wrapper);
+        return monitorDevices;
+    }
+
+    public List<MonitorDevice> getByPointByPointIds(List<Integer> ids) {
+        QueryWrapper<MonitorDevice> wrapper = new QueryWrapper<>();
+        wrapper.in("point_id", ids);
         wrapper.eq("enable", true);
 
         List<MonitorDevice> monitorDevices = deviceMapper.selectList(wrapper);
@@ -42,7 +54,7 @@ public class MonitorDeviceDao {
 
         QueryWrapper<MonitorDevice> wrapper = new QueryWrapper<>();
         wrapper.like(StrUtil.isNotBlank(monitorDeviceDto.getPointName()), "point_name", monitorDeviceDto.getPointName());
-        wrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getDeviceName()), "device_name", monitorDeviceDto.getDeviceName());
+        wrapper.like(StrUtil.isNotBlank(monitorDeviceDto.getDeviceName()), "device_name", monitorDeviceDto.getDeviceName());
         wrapper.like(StrUtil.isNotBlank(monitorDeviceDto.getAddress()), "address", monitorDeviceDto.getAddress());
         wrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getDeviceNo()), "device_no", monitorDeviceDto.getDeviceNo());
         wrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getDeviceType()), "device_type", monitorDeviceDto.getDeviceType());
@@ -73,28 +85,68 @@ public class MonitorDeviceDao {
 
             QueryWrapper<MonitorPoint> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("id", deviceDto.getPointId());
+            //针对 点位类型，供气企业，燃气种类，用户种类 特殊处理
+            queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getPointType()), "point_type", monitorDeviceDto.getPointType());
+            queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getGasCompany()), "gas_company", monitorDeviceDto.getGasCompany());
+            queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getGasType()), "gas_type", monitorDeviceDto.getGasType());
+            queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getUserType()), "user_type", monitorDeviceDto.getUserType());
             MonitorPoint monitorPoint = pointMapper.selectOne(queryWrapper);
+            if (!Objects.isNull(monitorPoint)) {
+                deviceDto.setGasCompany(monitorPoint.getGasCompany());
+                deviceDto.setGasType(monitorPoint.getGasType());
+                deviceDto.setUserType(monitorPoint.getUserType());
+                deviceDto.setPointType(monitorPoint.getPointType());
 
-            deviceDto.setGasCompany(monitorPoint.getGasCompany());
-            deviceDto.setGasType(monitorPoint.getGasType());
-            deviceDto.setUserType(monitorPoint.getUserType());
-            deviceDto.setPointType(monitorPoint.getPointType());
-
-            list.add(deviceDto);
+                list.add(deviceDto);
+            }
         }
 
-        //针对 点位类型，供气企业，燃气种类，用户种类 特殊处理
-        List<MonitorDeviceDto> collect = list.stream().filter(e -> StrUtil.isNotBlank(monitorDeviceDto.getGasCompany()) && Objects.equals(monitorDeviceDto.getGasCompany(), e.getGasCompany()))
-                .filter(e -> StrUtil.isNotBlank(monitorDeviceDto.getGasType()) && Objects.equals(monitorDeviceDto.getGasType(), e.getGasType()))
-                .filter(e -> StrUtil.isNotBlank(monitorDeviceDto.getUserType()) && Objects.equals(monitorDeviceDto.getUserType(), e.getUserType()))
-                .filter(e -> StrUtil.isNotBlank(monitorDeviceDto.getPointType()) && Objects.equals(monitorDeviceDto.getPointType(), e.getPointType()))
-                .collect(Collectors.toList());
-
-        pages.setRecords(collect);
+        pages.setRecords(list);
         pages.setTotal(monitorDevicePage.getTotal());
         pages.setSize(monitorDevicePage.getSize());
         pages.setCurrent(monitorDevicePage.getCurrent());
         pages.setPages(monitorDevicePage.getPages());
         return pages;
+    }
+
+    /**
+     * 根据设备编号查询设备
+     */
+    public MonitorDevice selectMonitorDeviceByNo(String deviceNo) {
+        QueryWrapper<MonitorDevice> wrapper = new QueryWrapper<>();
+        wrapper.eq("device_no", deviceNo);
+        return deviceMapper.selectOne(wrapper);
+    }
+
+    public void addMonitorDevice(MonitorDevice monitorDevice) {
+        deviceMapper.insert(monitorDevice);
+    }
+
+    public void updateMonitorPoint(MonitorDevice monitorDevice) {
+        deviceMapper.updateById(monitorDevice);
+    }
+
+    public MonitorDevice getById(Integer id) {
+        return deviceMapper.selectById(id);
+    }
+
+    public void delById(MonitorDevice monitorDevice) {
+        monitorDevice.setEnable(false);
+        deviceMapper.updateById(monitorDevice);
+    }
+
+    public List<MonitorDevice> selectByIds(List<Integer> ids) {
+        List<MonitorDevice> monitorDevices = deviceMapper.selectBatchIds(ids);
+        if (CollectionUtils.isEmpty(monitorDevices)) {
+            return null;
+        }
+        return monitorDevices;
+    }
+
+    public void delBatchIds(List<MonitorDevice> monitorDevices) {
+        for (MonitorDevice monitorDevice : monitorDevices) {
+            monitorDevice.setEnable(false);
+            deviceMapper.updateById(monitorDevice);
+        }
     }
 }
