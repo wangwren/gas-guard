@@ -9,13 +9,21 @@ import java.util.List;
 public interface MonitorPointService {
     Page<MonitorPoint> getMonitorPoint(MonitorPointRequest request);
 
+    Page<MonitorPoint> getPointManage(MonitorPointRequest request);
+
     void addOrUpdate(MonitorPointRequest request);
+
+    void addOrUpdateAll(MonitorPointRequest request);
 
     MonitorPoint getById(Integer id);
 
     void delById(Integer id);
 
+    void delByIdAll(Integer id);
+
     void delBatchIds(List<Integer> ids);
+
+    void delBatchIdsAll(List<Integer> ids);
 
     Page<MonitorPoint> getMonitorPointAll(MonitorPointRequest request);
 }

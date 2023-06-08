@@ -122,7 +122,7 @@ public class MonitorDeviceDao {
         deviceMapper.insert(monitorDevice);
     }
 
-    public void updateMonitorPoint(MonitorDevice monitorDevice) {
+    public void updateMonitorDevice(MonitorDevice monitorDevice) {
         deviceMapper.updateById(monitorDevice);
     }
 

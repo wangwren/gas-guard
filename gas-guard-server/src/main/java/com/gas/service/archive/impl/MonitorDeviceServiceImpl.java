@@ -71,7 +71,7 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
             throw new CommonException(500, "待审核状态数据不允许修改");
         }
         //修改
-        monitorDeviceDao.updateMonitorPoint(monitorDevice);
+        monitorDeviceDao.updateMonitorDevice(monitorDevice);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
 
         //修改设备为待审核
         monitorDevice.setArchiveStatus("待审核");
-        monitorDeviceDao.updateMonitorPoint(monitorDevice);
+        monitorDeviceDao.updateMonitorDevice(monitorDevice);
 
         //修改点位为待审核
         monitorPoint.setArchiveStatus("待审核");
@@ -159,7 +159,7 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
         //修改设备为待审核
         for (MonitorDevice monitorDevice : monitorDevices) {
             monitorDevice.setArchiveStatus("待审核");
-            monitorDeviceDao.updateMonitorPoint(monitorDevice);
+            monitorDeviceDao.updateMonitorDevice(monitorDevice);
         }
 
         //修改点位为待审核

@@ -111,4 +111,16 @@ public class MonitorPointRequest extends BaseRequest implements Serializable {
      * 结束时间
      */
     private Date endTime;
+
+    //监测点位管理用
+
+    /**
+     * 无设备
+     */
+    private Boolean noDevice = false;
+
+    /**
+     * 多设备
+     */
+    private Boolean manyDevice = false;
 }

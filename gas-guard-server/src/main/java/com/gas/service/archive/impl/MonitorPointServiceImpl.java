@@ -33,12 +33,27 @@ public class MonitorPointServiceImpl implements MonitorPointService {
     @Autowired
     private MonitorDeviceDao monitorDeviceDao;
 
+    /**
+     * 查询监测点位建档，不包含已通过数据
+     */
     @Override
     public Page<MonitorPoint> getMonitorPoint(MonitorPointRequest request) {
         MonitorPointDto monitorPoint = new MonitorPointDto();
         BeanUtils.copyProperties(request, monitorPoint);
 
         return monitorPointDao.selectPage(monitorPoint, request.getCurr(), request.getPageSize());
+    }
+
+    /**
+     * 查询监测点位设备，包含所有状态数据
+     * 新增无设备，多设备条件
+     */
+    @Override
+    public Page<MonitorPoint> getPointManage(MonitorPointRequest request) {
+        MonitorPointDto monitorPoint = new MonitorPointDto();
+        BeanUtils.copyProperties(request, monitorPoint);
+
+        return monitorPointDao.selectPagePointManage(monitorPoint, request.getCurr(), request.getPageSize());
     }
 
     @Override
@@ -74,6 +89,42 @@ public class MonitorPointServiceImpl implements MonitorPointService {
         monitorPointDao.updateMonitorPoint(monitorPoint);
     }
 
+    /**
+     * 监测点位管理，任何状态都可修改
+     */
+    @Override
+    @Transactional
+    public void addOrUpdateAll(MonitorPointRequest request) {
+        MonitorPoint monitorPoint = new MonitorPoint();
+        BeanUtils.copyProperties(request, monitorPoint);
+
+        if (Objects.isNull(monitorPoint.getId())) {
+            Subject subject = SecurityUtils.getSubject();
+            Users user = (Users) subject.getPrincipal();
+            monitorPoint.setCreator(user.getUsername());
+            //新增
+            monitorPointDao.addMonitorPoint(monitorPoint);
+            return;
+        }
+
+        //修改
+        monitorPointDao.updateMonitorPoint(monitorPoint);
+
+        //点位修改，对应点位下的设备，对应点位名称，组织名称，详细地址，行政区划也要做对应修改
+        List<MonitorDevice> monitorDevices = monitorDeviceDao.getByPointId(monitorPoint.getId());
+        if (CollectionUtils.isEmpty(monitorDevices)) {
+            return;
+        }
+
+        for (MonitorDevice monitorDevice : monitorDevices) {
+            monitorDevice.setPointName(monitorPoint.getPointName());
+            monitorDevice.setOrganName(monitorPoint.getOrganName());
+            monitorDevice.setAddress(monitorPoint.getAddress());
+            monitorDevice.setProvince(monitorPoint.getProvince());
+            monitorDeviceDao.updateMonitorDevice(monitorDevice);
+        }
+    }
+
     @Override
     public MonitorPoint getById(Integer id) {
         return monitorPointDao.getById(id);
@@ -101,6 +152,21 @@ public class MonitorPointServiceImpl implements MonitorPointService {
 
     @Override
     @Transactional
+    public void delByIdAll(Integer id) {
+        MonitorPoint monitorPoint = this.getById(id);
+
+        //如果点位上绑有设备，不允许删除
+        List<MonitorDevice> monitorDevices = monitorDeviceDao.getByPointId(id);
+        if (!CollectionUtils.isEmpty(monitorDevices)) {
+            log.warn("删除监测点位建档，当前点位绑有设备 ,不允许删除");
+            throw new CommonException(500, "当前点位绑有设备 ,不允许删除");
+        }
+
+        monitorPointDao.delById(monitorPoint);
+    }
+
+    @Override
+    @Transactional
     public void delBatchIds(List<Integer> ids) {
         List<MonitorPoint> list = monitorPointDao.selectByIds(ids);
         if (CollectionUtils.isEmpty(list)) {
@@ -113,6 +179,25 @@ public class MonitorPointServiceImpl implements MonitorPointService {
         if (anyMatch) {
             log.warn("批量删除监测点位建档，存在待审核数据集 ,不允许删除, list={}", list);
             throw new CommonException(500, "待审核状态数据不允许删除");
+        }
+
+        //如果点位上绑有设备，不允许删除
+        List<MonitorDevice> monitorDevices = monitorDeviceDao.getByPointByPointIds(ids);
+        if (!CollectionUtils.isEmpty(monitorDevices)) {
+            log.warn("删除监测点位建档，当前点位绑有设备 ,不允许删除");
+            throw new CommonException(500, "当前点位绑有设备 ,不允许删除");
+        }
+
+        monitorPointDao.delBatchIds(list);
+    }
+
+    @Override
+    @Transactional
+    public void delBatchIdsAll(List<Integer> ids) {
+        List<MonitorPoint> list = monitorPointDao.selectByIds(ids);
+        if (CollectionUtils.isEmpty(list)) {
+            log.warn("批量删除监测点位建档，查询数据为空");
+            throw new CommonException(ErrorCodeEnum.RELATED_RESOURCE_NOT_FOUND);
         }
 
         //如果点位上绑有设备，不允许删除

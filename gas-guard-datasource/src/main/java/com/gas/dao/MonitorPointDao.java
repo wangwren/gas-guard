@@ -4,25 +4,93 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.GlobalConstants;
+import com.gas.dao.mapper.MonitorDeviceMapper;
 import com.gas.dao.mapper.MonitorPointMapper;
+import com.gas.dto.MonitorDeviceDto;
 import com.gas.dto.MonitorPointDto;
+import com.gas.entity.MonitorDevice;
 import com.gas.entity.MonitorPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class MonitorPointDao {
 
     @Autowired
-    private MonitorPointMapper mapper;
+    private MonitorPointMapper pointMapper;
+    @Autowired
+    private MonitorDeviceDao deviceDao;
 
+    /**
+     * 监测点位建档，不包含已通过点位
+     */
     public Page<MonitorPoint> selectPage(MonitorPointDto monitorPoint, Integer curr, Integer pageSize) {
         //查询第curr页，每页pageSize条
         Page<MonitorPoint> page = new Page<>(curr,pageSize);
 
+        QueryWrapper<MonitorPoint> wrapper = getPointQueryWrapper(monitorPoint);
+        //不包含已通过数据
+        wrapper.ne("archive_status", GlobalConstants.ARCHIVE_PASS_STATUS);
+
+        Page<MonitorPoint> monitorPointPage = pointMapper.selectPage(page, wrapper);
+        return monitorPointPage;
+    }
+
+    /**
+     * 监测点位管理，包含所有档案状态
+     * 增加无设备，多设备限制
+     */
+    public Page<MonitorPoint> selectPagePointManage(MonitorPointDto monitorPoint, Integer curr, Integer pageSize) {
+
+        //查询第curr页，每页pageSize条
+        Page<MonitorPoint> page = new Page<>(curr,pageSize);
+
+        QueryWrapper<MonitorPoint> wrapper = getPointQueryWrapper(monitorPoint);
+        Page<MonitorPoint> monitorPointPage = pointMapper.selectPage(page, wrapper);
+
+        if (CollectionUtils.isEmpty(monitorPointPage.getRecords())) {
+            return monitorPointPage;
+        }
+
+
+        //查询无设备
+        if (monitorPoint.getNoDevice()) {
+            List<MonitorPoint> noDeviceList = new ArrayList<>();
+            for (MonitorPoint record : monitorPointPage.getRecords()) {
+                List<MonitorDevice> monitorDeviceList = deviceDao.getByPointId(record.getId());
+                if (CollectionUtils.isEmpty(monitorDeviceList)) {
+                    noDeviceList.add(record);
+                }
+            }
+            monitorPointPage.setRecords(noDeviceList);
+            monitorPointPage.setTotal(noDeviceList.size());
+        }
+
+        //查询多设备
+        if (monitorPoint.getManyDevice()) {
+            List<MonitorPoint> manyDeviceList = new ArrayList<>();
+            for (MonitorPoint record : monitorPointPage.getRecords()) {
+                List<MonitorDevice> monitorDeviceList = deviceDao.getByPointId(record.getId());
+                if (CollectionUtils.isEmpty(monitorDeviceList)) {
+                    continue;
+                }
+
+                if (monitorDeviceList.size() > 1) {
+                    manyDeviceList.add(record);
+                }
+            }
+            monitorPointPage.setRecords(manyDeviceList);
+            monitorPointPage.setTotal(manyDeviceList.size());
+        }
+
+        return monitorPointPage;
+    }
+
+    private static QueryWrapper<MonitorPoint> getPointQueryWrapper(MonitorPointDto monitorPoint) {
         QueryWrapper<MonitorPoint> wrapper = new QueryWrapper<>();
         wrapper.like(StrUtil.isNotBlank(monitorPoint.getPointName()), "point_name", monitorPoint.getPointName());
         wrapper.eq(StrUtil.isNotBlank(monitorPoint.getOrganName()), "organ_name", monitorPoint.getOrganName());
@@ -39,11 +107,7 @@ public class MonitorPointDao {
 
         //查询可用数据
         wrapper.eq("enable", 1);
-        //不包含已通过数据
-        wrapper.ne("archive_status", GlobalConstants.ARCHIVE_PASS_STATUS);
-
-        Page<MonitorPoint> monitorPointPage = mapper.selectPage(page, wrapper);
-        return monitorPointPage;
+        return wrapper;
     }
 
     public Page<MonitorPoint> selectPageAll(MonitorPointDto monitorPoint, Integer curr, Integer pageSize) {
@@ -55,29 +119,29 @@ public class MonitorPointDao {
         //查询可用数据
         wrapper.eq("enable", 1);
 
-        Page<MonitorPoint> monitorPointPage = mapper.selectPage(page, wrapper);
+        Page<MonitorPoint> monitorPointPage = pointMapper.selectPage(page, wrapper);
         return monitorPointPage;
     }
 
     public void addMonitorPoint(MonitorPoint monitorPoint) {
-        mapper.insert(monitorPoint);
+        pointMapper.insert(monitorPoint);
     }
 
     public void updateMonitorPoint(MonitorPoint monitorPoint) {
-        mapper.updateById(monitorPoint);
+        pointMapper.updateById(monitorPoint);
     }
 
     public MonitorPoint getById(Integer id) {
-        return mapper.selectById(id);
+        return pointMapper.selectById(id);
     }
 
     public void delById(MonitorPoint monitorPoint) {
         monitorPoint.setEnable(false);
-        mapper.updateById(monitorPoint);
+        pointMapper.updateById(monitorPoint);
     }
 
     public List<MonitorPoint> selectByIds(List<Integer> ids) {
-        List<MonitorPoint> monitorPoints = mapper.selectBatchIds(ids);
+        List<MonitorPoint> monitorPoints = pointMapper.selectBatchIds(ids);
         if (CollectionUtils.isEmpty(monitorPoints)) {
             return null;
         }
@@ -87,7 +151,7 @@ public class MonitorPointDao {
     public void delBatchIds(List<MonitorPoint> monitorPoints) {
         for (MonitorPoint monitorPoint : monitorPoints) {
             monitorPoint.setEnable(false);
-            mapper.updateById(monitorPoint);
+            pointMapper.updateById(monitorPoint);
         }
     }
 }
