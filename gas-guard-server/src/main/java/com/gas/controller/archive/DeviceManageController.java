@@ -3,7 +3,6 @@ package com.gas.controller.archive;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.ResponseInfo;
 import com.gas.dto.MonitorDeviceDto;
-import com.gas.entity.MonitorDevice;
 import com.gas.enums.ErrorCodeEnum;
 import com.gas.excel.MonitorDeviceExcel;
 import com.gas.excel.MonitorPointExcel;
@@ -27,88 +26,82 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Api("监测设备建档")
+/**
+ * 监测设备管理与监测设备建档差不多
+ * 区别：
+ *      1. 设备建档不展示已通过数据，设备管理展示档案所有状态数据
+ *      2. 待审核状态也允许修改
+ *      3. 增加批量恢复接口，设备状态变为正常，对应点位状态变为正常
+ */
+@Api("监测设备管理")
 @RestController
-@RequestMapping("/archive/monitorDevice")
+@RequestMapping("/archive/deviceManage")
 @Slf4j
-public class MonitorDeviceController {
+public class DeviceManageController {
 
     @Autowired
     private MonitorDeviceService monitorDeviceService;
     @Autowired
     private FileDownloadUtils downloadUtils;
 
-    @ApiOperation("查询监测设备建档(不包含已通过)")
-    @RequiresPermissions("archive:device:all")
+    @ApiOperation("查询监测设备管理")
+    @RequiresPermissions("archive:device_manage:all")
     @PostMapping("/getPage")
-    public ResponseInfo getMonitorDevice(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
-        log.info("[监测设备建档] --- 查询监测设备建档 , request= {}", request);
+    public ResponseInfo getMonitorPoint(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
+        log.info("[监测设备管理] --- 查询监测设备管理 , request= {}", request);
 
-        Page<MonitorDeviceDto> monitorDevicePage = monitorDeviceService.getMonitorDevice(request);
+        Page<MonitorDeviceDto> monitorDeviceDtoPage = monitorDeviceService.getDeviceManage(request);
 
-        return ResponseInfo.success(monitorDevicePage);
+        return ResponseInfo.success(monitorDeviceDtoPage);
     }
 
-    @ApiOperation("新增或修改监测设备建档")
+    @ApiOperation("新增或修改监测设备管理")
     @PostMapping("/addOrUpdate")
     public ResponseInfo addOrUpdate(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
-        log.info("[监测设备建档] --- 新增或修改监测设备建档 , request= {}", request);
+        log.info("[监测设备管理] --- 新增或修改监测设备管理 , request= {}", request);
 
-        //待审核 状态不允许修改
-        monitorDeviceService.addOrUpdate(request);
+        //任何状态都允许修改
+        monitorDeviceService.addOrUpdateAll(request);
 
         return ResponseInfo.success();
     }
 
-    @ApiOperation("根据id查询监测设备建档")
-    @PostMapping("/getById")
-    public ResponseInfo getById(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
-        log.info("[监测设备建档] --- 根据id查询监测设备建档 , request= {}", request);
-        if (Objects.isNull(request.getId())) {
-            log.warn("[监测设备建档] --- 根据id查询监测设备建档, 参数有误 req={}", request);
-            return ResponseInfo.error(ErrorCodeEnum.INVALID_PARAM_VALUE);
-        }
-
-        MonitorDevice monitorDevice = monitorDeviceService.getById(request.getId());
-        return ResponseInfo.success(monitorDevice);
-    }
-
-    @ApiOperation("删除监测设备建档")
+    @ApiOperation("删除监测设备管理")
     @PostMapping("/delById")
     public ResponseInfo delId(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
-        log.info("[监测设备建档] --- 删除监测设备建档 , request= {}", request);
+        log.info("[监测设备管理] --- 删除监测设备管理 , request= {}", request);
         if (Objects.isNull(request.getId())) {
-            log.warn("[监测设备建档] --- 删除监测设备建档, 参数有误 req={}", request);
+            log.warn("[监测设备管理] --- 删除监测设备管理, 参数有误 req={}", request);
             return ResponseInfo.error(ErrorCodeEnum.INVALID_PARAM_VALUE);
         }
 
-        //待审核不允许删除
-        monitorDeviceService.delById(request.getId());
+        //任何状态都允许删除
+        monitorDeviceService.delByIdAll(request.getId());
 
         return ResponseInfo.success();
     }
 
-    @ApiOperation("批量删除监测设备建档")
+    @ApiOperation("批量删除监测设备管理")
     @PostMapping("/delBatchIds")
     public ResponseInfo delBatchIds(@RequestBody BatchIdsRequest request, HttpServletRequest servletRequest) {
-        log.info("[监测设备建档] --- 批量删除监测设备建档 , request= {}", request);
+        log.info("[监测设备管理] --- 批量删除监测设备管理 , request= {}", request);
         if (CollectionUtils.isEmpty(request.getIds())) {
-            log.warn("[监测设备建档] --- 批量删除监测设备建档, 参数有误 req={}", request);
+            log.warn("[监测设备管理] --- 批量删除监测设备管理, 参数有误 req={}", request);
             return ResponseInfo.error(ErrorCodeEnum.INVALID_PARAM_VALUE);
         }
 
-        //待审核不允许删除
-        monitorDeviceService.delBatchIds(request.getIds());
+        //任何状态都允许删除
+        monitorDeviceService.delBatchIdsAll(request.getIds());
 
         return ResponseInfo.success();
     }
 
-    @ApiOperation("提交监测设备建档")
+    @ApiOperation("提交监测设备管理")
     @PostMapping("/commit")
     public ResponseInfo commit(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
-        log.info("[监测设备建档] --- 提交监测设备建档 , request= {}", request);
+        log.info("[监测设备管理] --- 提交监测设备管理 , request= {}", request);
         if (Objects.isNull(request.getId())) {
-            log.warn("[监测设备建档] --- 提交监测设备建档, 参数有误 req={}", request);
+            log.warn("[监测设备管理] --- 提交监测设备管理, 参数有误 req={}", request);
             return ResponseInfo.error(ErrorCodeEnum.INVALID_PARAM_VALUE);
         }
 
@@ -118,26 +111,40 @@ public class MonitorDeviceController {
         return ResponseInfo.success();
     }
 
-    @ApiOperation("批量提交监测设备建档")
+    @ApiOperation("批量提交监测设备管理")
     @PostMapping("/commitBatchIds")
     public ResponseInfo commitBatchIds(@RequestBody BatchIdsRequest request, HttpServletRequest servletRequest) {
-        log.info("[监测设备建档] --- 批量提交监测设备建档 , request= {}", request);
+        log.info("[监测设备管理] --- 批量提交监测设备管理 , request= {}", request);
         if (CollectionUtils.isEmpty(request.getIds())) {
-            log.warn("[监测设备建档] --- 批量提交监测设备建档, 参数有误 req={}", request);
+            log.warn("[监测设备管理] --- 批量提交监测设备管理, 参数有误 req={}", request);
             return ResponseInfo.error(ErrorCodeEnum.INVALID_PARAM_VALUE);
         }
 
-        //待审核不允许删除
+        //非待提交和未通过不允许提交
         monitorDeviceService.commitBatchIds(request.getIds());
 
         return ResponseInfo.success();
     }
 
-    @ApiOperation("监测设备建档导出")
+    @ApiOperation("批量设备恢复")
+    @PostMapping("/resumeBatchIds")
+    public ResponseInfo resumeBatchIds(@RequestBody BatchIdsRequest request, HttpServletRequest servletRequest) {
+        log.info("[监测设备管理] --- 批量设备恢复 , request= {}", request);
+        if (CollectionUtils.isEmpty(request.getIds())) {
+            log.warn("[监测设备管理] --- 批量设备恢复, 参数有误 req={}", request);
+            return ResponseInfo.error(ErrorCodeEnum.INVALID_PARAM_VALUE);
+        }
+
+        monitorDeviceService.resumeBatchIds(request.getIds());
+
+        return ResponseInfo.success();
+    }
+
+    @ApiOperation("监测设备管理导出")
     @GetMapping("/download")
     public void downloadExcel(@RequestBody MonitorDeviceRequest request, HttpServletResponse response) throws IOException {
-        String fileName = "monitor_device.xlsx";
-        Page<MonitorDeviceDto> monitorDeviceDtoPage = monitorDeviceService.getMonitorDevice(request);
+        String fileName = "monitor_device_manage.xlsx";
+        Page<MonitorDeviceDto> monitorDeviceDtoPage = monitorDeviceService.getDeviceManage(request);
         List<MonitorDeviceDto> records = monitorDeviceDtoPage.getRecords();
         List<MonitorDeviceExcel> list = new ArrayList<>();
         for (MonitorDeviceDto record : records) {

@@ -17,7 +17,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Component
 public class MonitorDeviceDao {
@@ -52,6 +51,39 @@ public class MonitorDeviceDao {
         //查询第curr页，每页pageSize条
         Page<MonitorDevice> page = new Page<>(curr,pageSize);
 
+        QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
+        //不包含已通过数据
+        wrapper.ne("archive_status", GlobalConstants.ARCHIVE_PASS_STATUS);
+        //查设备
+        Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
+
+        if (CollectionUtils.isEmpty(monitorDevicePage.getRecords())) {
+            return new Page<>();
+        }
+
+        //查点位,整合最终数据
+        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage);
+        return pages;
+    }
+
+    public Page<MonitorDeviceDto> selectPageDeviceManage(MonitorDeviceDto monitorDeviceDto, Integer curr, Integer pageSize) {
+        //查询第curr页，每页pageSize条
+        Page<MonitorDevice> page = new Page<>(curr,pageSize);
+
+        QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
+        //查设备
+        Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
+
+        if (CollectionUtils.isEmpty(monitorDevicePage.getRecords())) {
+            return new Page<>();
+        }
+
+        //查点位
+        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage);
+        return pages;
+    }
+
+    private static QueryWrapper<MonitorDevice> getDeviceQueryWrapper(MonitorDeviceDto monitorDeviceDto) {
         QueryWrapper<MonitorDevice> wrapper = new QueryWrapper<>();
         wrapper.like(StrUtil.isNotBlank(monitorDeviceDto.getPointName()), "point_name", monitorDeviceDto.getPointName());
         wrapper.like(StrUtil.isNotBlank(monitorDeviceDto.getDeviceName()), "device_name", monitorDeviceDto.getDeviceName());
@@ -67,15 +99,13 @@ public class MonitorDeviceDao {
 
         //查询可用数据
         wrapper.eq("enable", 1);
-        //不包含已通过数据
-        wrapper.ne("archive_status", GlobalConstants.ARCHIVE_PASS_STATUS);
-        //查设备
-        Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
+        return wrapper;
+    }
 
-        if (CollectionUtils.isEmpty(monitorDevicePage.getRecords())) {
-            return new Page<>();
-        }
-
+    /**
+     * 查询出的设备，再去查对应点位信息
+     */
+    private Page<MonitorDeviceDto> getMonitorDeviceDtoPage(MonitorDeviceDto monitorDeviceDto, Page<MonitorDevice> monitorDevicePage) {
         Page<MonitorDeviceDto> pages = new Page<>();
         List<MonitorDeviceDto> list = new ArrayList<>();
         //查点位
@@ -102,8 +132,8 @@ public class MonitorDeviceDao {
         }
 
         pages.setRecords(list);
-        pages.setTotal(monitorDevicePage.getTotal());
-        pages.setSize(monitorDevicePage.getSize());
+        pages.setTotal(list.size());
+        pages.setSize(list.size());
         pages.setCurrent(monitorDevicePage.getCurrent());
         pages.setPages(monitorDevicePage.getPages());
         return pages;

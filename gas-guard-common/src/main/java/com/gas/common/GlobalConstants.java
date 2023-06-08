@@ -15,5 +15,13 @@ public final class GlobalConstants {
      */
     public static final String ARCHIVE_CHECK_STATUS = "待审核";
 
+    /**
+     * 档案状态，已通过
+     */
     public static final String ARCHIVE_PASS_STATUS = "已通过";
+
+    /**
+     * 档案状态，未通过
+     */
+    public static final String ARCHIVE_NO_PASS_STATUS = "未通过";
 }
