@@ -83,6 +83,25 @@ public class MonitorDeviceDao {
         return pages;
     }
 
+    public Page<MonitorDeviceDto> selectPageDeviceAudit(MonitorDeviceDto monitorDeviceDto, Integer curr, Integer pageSize) {
+        //查询第curr页，每页pageSize条
+        Page<MonitorDevice> page = new Page<>(curr,pageSize);
+
+        QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
+        //只查询待审核数据
+        wrapper.ne("archive_status", GlobalConstants.ARCHIVE_CHECK_STATUS);
+        //查设备
+        Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
+
+        if (CollectionUtils.isEmpty(monitorDevicePage.getRecords())) {
+            return new Page<>();
+        }
+
+        //查点位,整合最终数据
+        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage);
+        return pages;
+    }
+
     private static QueryWrapper<MonitorDevice> getDeviceQueryWrapper(MonitorDeviceDto monitorDeviceDto) {
         QueryWrapper<MonitorDevice> wrapper = new QueryWrapper<>();
         wrapper.like(StrUtil.isNotBlank(monitorDeviceDto.getPointName()), "point_name", monitorDeviceDto.getPointName());
@@ -165,18 +184,18 @@ public class MonitorDeviceDao {
         deviceMapper.updateById(monitorDevice);
     }
 
+    public void delBatchIds(List<MonitorDevice> monitorDevices) {
+        for (MonitorDevice monitorDevice : monitorDevices) {
+            monitorDevice.setEnable(false);
+            deviceMapper.updateById(monitorDevice);
+        }
+    }
+
     public List<MonitorDevice> selectByIds(List<Integer> ids) {
         List<MonitorDevice> monitorDevices = deviceMapper.selectBatchIds(ids);
         if (CollectionUtils.isEmpty(monitorDevices)) {
             return null;
         }
         return monitorDevices;
-    }
-
-    public void delBatchIds(List<MonitorDevice> monitorDevices) {
-        for (MonitorDevice monitorDevice : monitorDevices) {
-            monitorDevice.setEnable(false);
-            deviceMapper.updateById(monitorDevice);
-        }
     }
 }

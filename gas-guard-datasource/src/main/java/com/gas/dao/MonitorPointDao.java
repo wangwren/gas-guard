@@ -123,7 +123,7 @@ public class MonitorPointDao {
         return monitorPointPage;
     }
 
-    public void addMonitorPoint(MonitorPoint monitorPoint) {
+    public void FaddMonitorPoint(MonitorPoint monitorPoint) {
         pointMapper.insert(monitorPoint);
     }
 

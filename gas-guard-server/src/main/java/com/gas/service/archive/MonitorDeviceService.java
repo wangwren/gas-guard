@@ -1,6 +1,7 @@
 package com.gas.service.archive;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gas.dto.DeviceAuditDto;
 import com.gas.dto.MonitorDeviceDto;
 import com.gas.entity.MonitorDevice;
 import com.gas.model.MonitorDeviceRequest;
@@ -11,6 +12,8 @@ public interface MonitorDeviceService {
     Page<MonitorDeviceDto> getMonitorDevice(MonitorDeviceRequest request);
 
     Page<MonitorDeviceDto> getDeviceManage(MonitorDeviceRequest request);
+
+    Page<MonitorDeviceDto> getDeviceAudit(MonitorDeviceRequest request);
 
     void addOrUpdate(MonitorDeviceRequest request);
 
@@ -31,4 +34,6 @@ public interface MonitorDeviceService {
     void commitBatchIds(List<Integer> ids);
 
     void resumeBatchIds(List<Integer> ids);
+
+    DeviceAuditDto doAudit(MonitorDeviceRequest request);
 }

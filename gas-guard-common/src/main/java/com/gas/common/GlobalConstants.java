@@ -24,4 +24,8 @@ public final class GlobalConstants {
      * 档案状态，未通过
      */
     public static final String ARCHIVE_NO_PASS_STATUS = "未通过";
+
+    public static final String AUDIT_PASS = "通过";
+
+    public static final String AUDIT_NO_PASS = "不通过";
 }

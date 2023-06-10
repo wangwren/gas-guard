@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.GlobalConstants;
 import com.gas.dao.MonitorDeviceDao;
 import com.gas.dao.MonitorPointDao;
+import com.gas.dto.DeviceAuditDto;
 import com.gas.dto.MonitorDeviceDto;
 import com.gas.entity.MonitorDevice;
 import com.gas.entity.MonitorPoint;
@@ -48,6 +49,14 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
         BeanUtils.copyProperties(request, monitorDeviceDto);
 
         return monitorDeviceDao.selectPageDeviceManage(monitorDeviceDto, request.getCurr(), request.getPageSize());
+    }
+
+    @Override
+    public Page<MonitorDeviceDto> getDeviceAudit(MonitorDeviceRequest request) {
+        MonitorDeviceDto monitorDeviceDto = new MonitorDeviceDto();
+        BeanUtils.copyProperties(request, monitorDeviceDto);
+
+        return monitorDeviceDao.selectPageDeviceAudit(monitorDeviceDto, request.getCurr(), request.getPageSize());
     }
 
     @Override
@@ -254,5 +263,24 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
             monitorPoint.setPointStatus("正常");
             monitorPointDao.updateMonitorPoint(monitorPoint);
         }
+    }
+
+    @Override
+    public DeviceAuditDto doAudit(MonitorDeviceRequest request) {
+
+        //根据id查询设备信息
+        MonitorDevice monitorDevice = monitorDeviceDao.getById(request.getId());
+        if (Objects.isNull(monitorDevice)) {
+            log.warn("设备信息不存在 id = {}", request.getId());
+            throw new CommonException(ErrorCodeEnum.RESOURCE_NOT_FOUND);
+        }
+
+        //根据设备对应的点位id，查询点位信息
+        MonitorPoint monitorPoint = monitorPointDao.getById(monitorDevice.getPointId());
+
+        DeviceAuditDto deviceAuditDto = new DeviceAuditDto();
+        deviceAuditDto.setMonitorDevice(monitorDevice);
+        deviceAuditDto.setMonitorPoint(monitorPoint);
+        return deviceAuditDto;
     }
 }

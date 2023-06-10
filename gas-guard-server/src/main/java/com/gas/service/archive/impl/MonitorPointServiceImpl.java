@@ -87,6 +87,8 @@ public class MonitorPointServiceImpl implements MonitorPointService {
         }
         //修改
         monitorPointDao.updateMonitorPoint(monitorPoint);
+        //点位修改，对应点位下的设备也要进行修改
+        this.updatePoint2Device(monitorPoint);
     }
 
     /**
@@ -109,7 +111,14 @@ public class MonitorPointServiceImpl implements MonitorPointService {
 
         //修改
         monitorPointDao.updateMonitorPoint(monitorPoint);
+        //点位修改，对应点位下的设备也要进行修改
+        this.updatePoint2Device(monitorPoint);
+    }
 
+    /**
+     * 修改对应点位下的设备
+     */
+    private void updatePoint2Device(MonitorPoint monitorPoint) {
         //点位修改，对应点位下的设备，对应点位名称，组织名称，详细地址，行政区划也要做对应修改
         List<MonitorDevice> monitorDevices = monitorDeviceDao.getByPointId(monitorPoint.getId());
         if (CollectionUtils.isEmpty(monitorDevices)) {
