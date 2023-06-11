@@ -1,5 +1,6 @@
 package com.gas.service.archive.impl;
 
+import com.gas.common.GlobalConstants;
 import com.gas.dao.AuditInfoDao;
 import com.gas.dao.MonitorDeviceDao;
 import com.gas.dao.MonitorPointDao;
@@ -17,6 +18,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 public class DeviceAuditServiceImpl implements DeviceAuditService {
@@ -43,13 +46,18 @@ public class DeviceAuditServiceImpl implements DeviceAuditService {
 
         MonitorPoint monitorPoint = pointDao.getById(request.getPointId());
         MonitorDevice monitorDevice = deviceDao.getById(request.getDeviceId());
-        //审核通过，设备、点位 状态都已通过
-        monitorPoint.setPointStatus("已通过");
-        monitorDevice.setDeviceStatus("已通过");
 
-        //审核不通过，设备、点位 状态都 未通过
-        monitorPoint.setPointStatus("未通过");
-        monitorDevice.setDeviceStatus("未通过");
+        if (Objects.equals(auditInfo.getAuditStatus(), GlobalConstants.AUDIT_PASS)) {
+            //审核通过，设备、点位 状态都已通过
+            monitorPoint.setArchiveStatus("已通过");
+            monitorDevice.setArchiveStatus("已通过");
+        }
+
+        if (Objects.equals(auditInfo.getAuditStatus(), GlobalConstants.AUDIT_NO_PASS)) {
+            //审核不通过，设备、点位 状态都 未通过
+            monitorPoint.setArchiveStatus("未通过");
+            monitorDevice.setArchiveStatus("未通过");
+        }
 
         pointDao.updateMonitorPoint(monitorPoint);
         deviceDao.updateMonitorDevice(monitorDevice);
@@ -74,8 +82,8 @@ public class DeviceAuditServiceImpl implements DeviceAuditService {
             auditInfoDao.add(auditInfo);
 
             //审核通过，设备、点位 状态都已通过
-            monitorPoint.setPointStatus("已通过");
-            monitorDevice.setDeviceStatus("已通过");
+            monitorPoint.setArchiveStatus("已通过");
+            monitorDevice.setArchiveStatus("已通过");
 
             pointDao.updateMonitorPoint(monitorPoint);
             deviceDao.updateMonitorDevice(monitorDevice);
@@ -102,8 +110,8 @@ public class DeviceAuditServiceImpl implements DeviceAuditService {
             auditInfoDao.add(auditInfo);
 
             //审核通过，设备、点位 状态都已通过
-            monitorPoint.setPointStatus("未通过");
-            monitorDevice.setDeviceStatus("未通过");
+            monitorPoint.setArchiveStatus("未通过");
+            monitorDevice.setArchiveStatus("未通过");
 
             pointDao.updateMonitorPoint(monitorPoint);
             deviceDao.updateMonitorDevice(monitorDevice);

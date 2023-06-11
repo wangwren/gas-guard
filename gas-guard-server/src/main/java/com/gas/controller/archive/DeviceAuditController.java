@@ -86,7 +86,7 @@ public class DeviceAuditController {
             return ResponseInfo.error(ErrorCodeEnum.INVALID_PARAM_VALUE);
         }
 
-        if (!Objects.isNull(request.getPointRequest()) && !Objects.isNull(request.getDeviceRequest().getId())) {
+        if (!Objects.isNull(request.getPointRequest()) && !Objects.isNull(request.getPointRequest().getId())) {
             //点位信息修改
             monitorPointService.addOrUpdateAll(request.getPointRequest());
         }

@@ -89,7 +89,7 @@ public class MonitorDeviceDao {
 
         QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
         //只查询待审核数据
-        wrapper.ne("archive_status", GlobalConstants.ARCHIVE_CHECK_STATUS);
+        wrapper.eq("archive_status", GlobalConstants.ARCHIVE_CHECK_STATUS);
         //查设备
         Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
 
