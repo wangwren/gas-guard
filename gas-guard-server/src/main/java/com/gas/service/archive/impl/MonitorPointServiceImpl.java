@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.GlobalConstants;
 import com.gas.dao.MonitorDeviceDao;
 import com.gas.dao.MonitorPointDao;
+import com.gas.dto.FormalPointDto;
 import com.gas.dto.MonitorPointDto;
 import com.gas.entity.MonitorDevice;
 import com.gas.entity.MonitorPoint;
@@ -57,11 +58,30 @@ public class MonitorPointServiceImpl implements MonitorPointService {
     }
 
     @Override
+    public Page<MonitorPoint> getFormalPoint(MonitorPointRequest request) {
+        MonitorPointDto monitorPoint = new MonitorPointDto();
+        BeanUtils.copyProperties(request, monitorPoint);
+
+        return monitorPointDao.selectPageFormalPoint(monitorPoint, request.getCurr(), request.getPageSize());
+    }
+
+    @Override
     public Page<MonitorPoint> getMonitorPointAll(MonitorPointRequest request) {
         MonitorPointDto monitorPoint = new MonitorPointDto();
         BeanUtils.copyProperties(request, monitorPoint);
 
         return monitorPointDao.selectPageAll(monitorPoint, request.getCurr(), request.getPageSize());
+    }
+
+    @Override
+    public FormalPointDto getPointDeviceById(Integer id) {
+        FormalPointDto formalPointDto = new FormalPointDto();
+        MonitorPoint monitorPoint = this.getById(id);
+        List<MonitorDevice> monitorDevices = monitorDeviceDao.getByPointId(monitorPoint.getId());
+
+        formalPointDto.setMonitorPoint(monitorPoint);
+        formalPointDto.setMonitorDevices(monitorDevices);
+        return formalPointDto;
     }
 
     @Override

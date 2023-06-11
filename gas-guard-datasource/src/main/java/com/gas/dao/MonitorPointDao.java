@@ -4,9 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.GlobalConstants;
-import com.gas.dao.mapper.MonitorDeviceMapper;
 import com.gas.dao.mapper.MonitorPointMapper;
-import com.gas.dto.MonitorDeviceDto;
 import com.gas.dto.MonitorPointDto;
 import com.gas.entity.MonitorDevice;
 import com.gas.entity.MonitorPoint;
@@ -35,6 +33,21 @@ public class MonitorPointDao {
         QueryWrapper<MonitorPoint> wrapper = getPointQueryWrapper(monitorPoint);
         //不包含已通过数据
         wrapper.ne("archive_status", GlobalConstants.ARCHIVE_PASS_STATUS);
+
+        Page<MonitorPoint> monitorPointPage = pointMapper.selectPage(page, wrapper);
+        return monitorPointPage;
+    }
+
+    /**
+     * 正式档案管理，只查询已通过点位
+     */
+    public Page<MonitorPoint> selectPageFormalPoint(MonitorPointDto monitorPoint, Integer curr, Integer pageSize) {
+        //查询第curr页，每页pageSize条
+        Page<MonitorPoint> page = new Page<>(curr,pageSize);
+
+        QueryWrapper<MonitorPoint> wrapper = getPointQueryWrapper(monitorPoint);
+        //不包含已通过数据
+        wrapper.eq("archive_status", GlobalConstants.ARCHIVE_PASS_STATUS);
 
         Page<MonitorPoint> monitorPointPage = pointMapper.selectPage(page, wrapper);
         return monitorPointPage;

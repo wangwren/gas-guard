@@ -1,6 +1,7 @@
 package com.gas.service.archive;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gas.dto.FormalPointDto;
 import com.gas.entity.MonitorPoint;
 import com.gas.model.MonitorPointRequest;
 
@@ -10,6 +11,8 @@ public interface MonitorPointService {
     Page<MonitorPoint> getMonitorPoint(MonitorPointRequest request);
 
     Page<MonitorPoint> getPointManage(MonitorPointRequest request);
+
+    Page<MonitorPoint> getFormalPoint(MonitorPointRequest request);
 
     void addOrUpdate(MonitorPointRequest request);
 
@@ -26,4 +29,6 @@ public interface MonitorPointService {
     void delBatchIdsAll(List<Integer> ids);
 
     Page<MonitorPoint> getMonitorPointAll(MonitorPointRequest request);
+
+    FormalPointDto getPointDeviceById(Integer id);
 }
