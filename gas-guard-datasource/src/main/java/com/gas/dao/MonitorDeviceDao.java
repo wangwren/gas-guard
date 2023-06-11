@@ -62,7 +62,7 @@ public class MonitorDeviceDao {
         }
 
         //查点位,整合最终数据
-        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage);
+        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage ,false, false);
         return pages;
     }
 
@@ -79,7 +79,7 @@ public class MonitorDeviceDao {
         }
 
         //查点位
-        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage);
+        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage, false, false);
         return pages;
     }
 
@@ -98,7 +98,45 @@ public class MonitorDeviceDao {
         }
 
         //查点位,整合最终数据
-        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage);
+        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage, false, false);
+        return pages;
+    }
+
+    public Page<MonitorDeviceDto> selectPageNaturalAudit(MonitorDeviceDto monitorDeviceDto, Integer curr, Integer pageSize) {
+        //查询第curr页，每页pageSize条
+        Page<MonitorDevice> page = new Page<>(curr,pageSize);
+
+        QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
+        //只查询待审核数据
+        wrapper.eq("archive_status", GlobalConstants.ARCHIVE_CHECK_STATUS);
+        //查设备
+        Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
+
+        if (CollectionUtils.isEmpty(monitorDevicePage.getRecords())) {
+            return new Page<>();
+        }
+
+        //查点位,整合最终数据
+        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage, true, false);
+        return pages;
+    }
+
+    public Page<MonitorDeviceDto> selectPageLiquefyAudit(MonitorDeviceDto monitorDeviceDto, Integer curr, Integer pageSize) {
+        //查询第curr页，每页pageSize条
+        Page<MonitorDevice> page = new Page<>(curr,pageSize);
+
+        QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
+        //只查询待审核数据
+        wrapper.eq("archive_status", GlobalConstants.ARCHIVE_CHECK_STATUS);
+        //查设备
+        Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
+
+        if (CollectionUtils.isEmpty(monitorDevicePage.getRecords())) {
+            return new Page<>();
+        }
+
+        //查点位,整合最终数据
+        Page<MonitorDeviceDto> pages = getMonitorDeviceDtoPage(monitorDeviceDto, monitorDevicePage, false, true);
         return pages;
     }
 
@@ -123,8 +161,11 @@ public class MonitorDeviceDao {
 
     /**
      * 查询出的设备，再去查对应点位信息
+     * @param natural  是否天然气
+     * @param liquefy  是否液化气
      */
-    private Page<MonitorDeviceDto> getMonitorDeviceDtoPage(MonitorDeviceDto monitorDeviceDto, Page<MonitorDevice> monitorDevicePage) {
+    private Page<MonitorDeviceDto> getMonitorDeviceDtoPage(MonitorDeviceDto monitorDeviceDto, Page<MonitorDevice> monitorDevicePage
+            , Boolean natural, Boolean liquefy) {
         Page<MonitorDeviceDto> pages = new Page<>();
         List<MonitorDeviceDto> list = new ArrayList<>();
         //查点位
@@ -139,6 +180,13 @@ public class MonitorDeviceDao {
             queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getGasCompany()), "gas_company", monitorDeviceDto.getGasCompany());
             queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getGasType()), "gas_type", monitorDeviceDto.getGasType());
             queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getUserType()), "user_type", monitorDeviceDto.getUserType());
+            if (natural) {
+                queryWrapper.eq("gas_type", "天然气");
+            }
+
+            if (liquefy) {
+                queryWrapper.eq("gas_type", "液化石油气");
+            }
             MonitorPoint monitorPoint = pointMapper.selectOne(queryWrapper);
             if (!Objects.isNull(monitorPoint)) {
                 deviceDto.setGasCompany(monitorPoint.getGasCompany());

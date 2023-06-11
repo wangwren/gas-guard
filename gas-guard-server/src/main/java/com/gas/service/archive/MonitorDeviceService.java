@@ -15,6 +15,10 @@ public interface MonitorDeviceService {
 
     Page<MonitorDeviceDto> getDeviceAudit(MonitorDeviceRequest request);
 
+    Page<MonitorDeviceDto> getNaturalAudit(MonitorDeviceRequest request);
+
+    Page<MonitorDeviceDto> getLiquefyAudit(MonitorDeviceRequest request);
+
     void addOrUpdate(MonitorDeviceRequest request);
 
     void addOrUpdateAll(MonitorDeviceRequest request);

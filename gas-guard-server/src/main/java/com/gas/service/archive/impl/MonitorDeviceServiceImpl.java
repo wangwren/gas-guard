@@ -60,6 +60,22 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
     }
 
     @Override
+    public Page<MonitorDeviceDto> getNaturalAudit(MonitorDeviceRequest request) {
+        MonitorDeviceDto monitorDeviceDto = new MonitorDeviceDto();
+        BeanUtils.copyProperties(request, monitorDeviceDto);
+
+        return monitorDeviceDao.selectPageNaturalAudit(monitorDeviceDto, request.getCurr(), request.getPageSize());
+    }
+
+    @Override
+    public Page<MonitorDeviceDto> getLiquefyAudit(MonitorDeviceRequest request) {
+        MonitorDeviceDto monitorDeviceDto = new MonitorDeviceDto();
+        BeanUtils.copyProperties(request, monitorDeviceDto);
+
+        return monitorDeviceDao.selectPageLiquefyAudit(monitorDeviceDto, request.getCurr(), request.getPageSize());
+    }
+
+    @Override
     @Transactional
     public void addOrUpdate(MonitorDeviceRequest request) {
         MonitorDevice monitorDevice = new MonitorDevice();

@@ -50,11 +50,11 @@ public class DeviceAuditController {
     @Autowired
     private FileDownloadUtils downloadUtils;
 
-    @ApiOperation("查询监测设备建档(只包含待审核)")
+    @ApiOperation("查询设备档案审核(只包含待审核)")
     @RequiresPermissions("archive:device_audit:all")
     @PostMapping("/getPage")
-    public ResponseInfo getMonitorDevice(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
-        log.info("[设备档案审核] --- 查询监测设备建档(只包含待审核) , request= {}", request);
+    public ResponseInfo getDeviceAudit(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
+        log.info("[设备档案审核] --- 查询设备档案审核(只包含待审核) , request= {}", request);
 
         Page<MonitorDeviceDto> monitorDevicePage = monitorDeviceService.getDeviceAudit(request);
 
