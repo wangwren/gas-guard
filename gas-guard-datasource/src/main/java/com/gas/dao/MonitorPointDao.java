@@ -136,6 +136,14 @@ public class MonitorPointDao {
         return monitorPointPage;
     }
 
+    public List<MonitorPoint> selectByPointName(String pointName) {
+
+        QueryWrapper<MonitorPoint> wrapper = new QueryWrapper<>();
+        wrapper.like("point_name", pointName);
+        List<MonitorPoint> monitorPoints = pointMapper.selectList(wrapper);
+        return monitorPoints;
+    }
+
     public void addMonitorPoint(MonitorPoint monitorPoint) {
         pointMapper.insert(monitorPoint);
     }

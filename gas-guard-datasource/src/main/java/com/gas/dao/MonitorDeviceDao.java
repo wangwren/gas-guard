@@ -246,4 +246,12 @@ public class MonitorDeviceDao {
         }
         return monitorDevices;
     }
+
+    public List<MonitorDevice> selectByDeviceNameAndNo(String deviceName, String deviceNo) {
+        QueryWrapper<MonitorDevice> wrapper = new QueryWrapper<>();
+        wrapper.eq(StrUtil.isNotBlank(deviceName), "device_name", deviceName);
+        wrapper.eq(StrUtil.isNotBlank(deviceNo), "device_no", deviceNo);
+        List<MonitorDevice> monitorDevices = deviceMapper.selectList(wrapper);
+        return monitorDevices;
+    }
 }

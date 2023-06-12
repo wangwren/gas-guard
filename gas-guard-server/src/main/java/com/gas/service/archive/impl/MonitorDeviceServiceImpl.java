@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.GlobalConstants;
 import com.gas.dao.MonitorDeviceDao;
 import com.gas.dao.MonitorPointDao;
+import com.gas.dao.WarnInfoDao;
 import com.gas.dto.DeviceAuditDto;
 import com.gas.dto.MonitorDeviceDto;
 import com.gas.entity.MonitorDevice;
 import com.gas.entity.MonitorPoint;
 import com.gas.entity.Users;
+import com.gas.entity.WarnInfo;
 import com.gas.enums.ErrorCodeEnum;
 import com.gas.exception.CommonException;
 import com.gas.model.MonitorDeviceRequest;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,6 +37,8 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
     private MonitorDeviceDao monitorDeviceDao;
     @Autowired
     private MonitorPointDao monitorPointDao;
+    @Autowired
+    private WarnInfoDao warnInfoDao;
 
     @Override
     public Page<MonitorDeviceDto> getMonitorDevice(MonitorDeviceRequest request) {
@@ -283,6 +288,7 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
 
     @Override
     public DeviceAuditDto doAudit(MonitorDeviceRequest request) {
+        DeviceAuditDto deviceAuditDto = new DeviceAuditDto();
 
         //根据id查询设备信息
         MonitorDevice monitorDevice = monitorDeviceDao.getById(request.getId());
@@ -294,7 +300,19 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
         //根据设备对应的点位id，查询点位信息
         MonitorPoint monitorPoint = monitorPointDao.getById(monitorDevice.getPointId());
 
-        DeviceAuditDto deviceAuditDto = new DeviceAuditDto();
+        //根据设备id，查询预警信息
+        List<WarnInfo> warnInfos = warnInfoDao.selectByDeviceId(monitorDevice.getId());
+        if (!CollectionUtils.isEmpty(warnInfos)) {
+            List<DeviceAuditDto.DeviceWarnInfo> list = new ArrayList<>();
+            for (WarnInfo warnInfo : warnInfos) {
+                DeviceAuditDto.DeviceWarnInfo deviceWarnInfo = new DeviceAuditDto.DeviceWarnInfo();
+                BeanUtils.copyProperties(warnInfo, deviceWarnInfo);
+                deviceWarnInfo.setDeviceName(monitorDevice.getDeviceName());
+
+                list.add(deviceWarnInfo);
+            }
+            deviceAuditDto.setDeviceWarnInfo(list);
+        }
         deviceAuditDto.setMonitorDevice(monitorDevice);
         deviceAuditDto.setMonitorPoint(monitorPoint);
         return deviceAuditDto;

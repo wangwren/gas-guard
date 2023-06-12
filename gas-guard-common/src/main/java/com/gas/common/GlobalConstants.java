@@ -28,4 +28,12 @@ public final class GlobalConstants {
     public static final String AUDIT_PASS = "通过";
 
     public static final String AUDIT_NO_PASS = "不通过";
+
+    public static final String WAIN_INFO_CONFIRM = "待确认";
+
+
+    public static final String WAIN_INFO_DEAL = "待处置";
+
+
+    public static final String WAIN_INFO_DEAL_OK = "已处置";
 }
