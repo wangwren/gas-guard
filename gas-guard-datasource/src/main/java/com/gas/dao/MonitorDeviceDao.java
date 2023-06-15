@@ -254,4 +254,9 @@ public class MonitorDeviceDao {
         List<MonitorDevice> monitorDevices = deviceMapper.selectList(wrapper);
         return monitorDevices;
     }
+
+    public List<MonitorDevice> getDeviceList() {
+        List<MonitorDevice> monitorDevices = deviceMapper.selectList(null);
+        return monitorDevices;
+    }
 }

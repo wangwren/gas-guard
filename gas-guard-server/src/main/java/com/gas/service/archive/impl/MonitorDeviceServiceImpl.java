@@ -81,6 +81,11 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
     }
 
     @Override
+    public List<MonitorDevice> getDeviceList() {
+        return monitorDeviceDao.getDeviceList();
+    }
+
+    @Override
     @Transactional
     public void addOrUpdate(MonitorDeviceRequest request) {
         MonitorDevice monitorDevice = new MonitorDevice();

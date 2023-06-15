@@ -32,6 +32,11 @@ public class WarnDealInfo implements Serializable {
     private Integer deviceId;
 
     /**
+     * 处置反馈
+     */
+    private String feedback;
+
+    /**
      * 设备状态:待自动恢复；已自动恢复
      */
     private String deviceStatus;

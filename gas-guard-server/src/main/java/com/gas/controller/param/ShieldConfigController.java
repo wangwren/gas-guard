@@ -2,9 +2,11 @@ package com.gas.controller.param;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.ResponseInfo;
+import com.gas.entity.MonitorDevice;
 import com.gas.entity.ShieldConfig;
 import com.gas.enums.ErrorCodeEnum;
 import com.gas.model.ShieldConfigRequest;
+import com.gas.service.archive.MonitorDeviceService;
 import com.gas.service.param.ShieldConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Objects;
 
 @Api("屏蔽策略配置")
@@ -27,6 +30,8 @@ public class ShieldConfigController {
 
     @Autowired
     private ShieldConfigService shieldConfigService;
+    @Autowired
+    private MonitorDeviceService deviceService;
 
     @ApiOperation("查询屏蔽策略")
     //@RequiresPermissions("param:shield:all")
@@ -47,6 +52,14 @@ public class ShieldConfigController {
         shieldConfigService.add(request);
 
         return ResponseInfo.success();
+    }
+
+    @ApiOperation("查询屏蔽设备列表")
+    @PostMapping("/getDeviceList")
+    public ResponseInfo getDeviceList(HttpServletRequest servletRequest) {
+        log.info("[屏蔽策略配置] --- 查询屏蔽策略 ");
+        List<MonitorDevice> deviceList = deviceService.getDeviceList();
+        return ResponseInfo.success(deviceList);
     }
 
     @ApiOperation("根据id查询屏蔽策略")

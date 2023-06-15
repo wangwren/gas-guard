@@ -23,6 +23,12 @@ public class WarnDealInfoRequest implements Serializable {
     private Integer deviceId;
 
     /**
+     * 处置反馈
+     */
+    @NotNull(message = "处置反馈不能为空")
+    private String feedback;
+
+    /**
      * 设备状态:待自动恢复；已自动恢复
      */
     @NotBlank(message = "设备状态不能为空")
