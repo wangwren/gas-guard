@@ -45,7 +45,7 @@ public class DeviceManageController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("查询监测设备管理")
-    @RequiresPermissions("archive:device_manage:all")
+    //@RequiresPermissions("archive:device_manage:all")
     @PostMapping("/getPage")
     public ResponseInfo getMonitorPoint(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
         log.info("[监测设备管理] --- 查询监测设备管理 , request= {}", request);

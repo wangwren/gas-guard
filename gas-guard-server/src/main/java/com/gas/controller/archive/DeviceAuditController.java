@@ -51,7 +51,7 @@ public class DeviceAuditController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("查询设备档案审核(只包含待审核)")
-    @RequiresPermissions("archive:device_audit:all")
+    //@RequiresPermissions("archive:device_audit:all")
     @PostMapping("/getPage")
     public ResponseInfo getDeviceAudit(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
         log.info("[设备档案审核] --- 查询设备档案审核(只包含待审核) , request= {}", request);

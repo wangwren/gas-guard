@@ -29,7 +29,7 @@ public class OfflineRuleController {
     private OfflineRuleService offlineRuleService;
 
     @ApiOperation("查询离线规则")
-    @RequiresPermissions("param:offline:all")
+    //@RequiresPermissions("param:offline:all")
     @PostMapping("/getPage")
     public ResponseInfo getOfflineRule(@RequestBody OfflineRuleRequest request, HttpServletRequest servletRequest) {
         log.info("[离线规则配置] --- 查询离线规则 , request= {}", request);

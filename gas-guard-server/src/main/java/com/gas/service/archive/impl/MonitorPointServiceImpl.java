@@ -91,9 +91,9 @@ public class MonitorPointServiceImpl implements MonitorPointService {
         BeanUtils.copyProperties(request, monitorPoint);
 
         if (Objects.isNull(monitorPoint.getId())) {
-            Subject subject = SecurityUtils.getSubject();
-            Users user = (Users) subject.getPrincipal();
-            monitorPoint.setCreator(user.getUsername());
+//            Subject subject = SecurityUtils.getSubject();
+//            Users user = (Users) subject.getPrincipal();
+//            monitorPoint.setCreator(user.getUsername());
             //新增
             monitorPointDao.addMonitorPoint(monitorPoint);
             return;
@@ -121,9 +121,9 @@ public class MonitorPointServiceImpl implements MonitorPointService {
         BeanUtils.copyProperties(request, monitorPoint);
 
         if (Objects.isNull(monitorPoint.getId())) {
-            Subject subject = SecurityUtils.getSubject();
-            Users user = (Users) subject.getPrincipal();
-            monitorPoint.setCreator(user.getUsername());
+//            Subject subject = SecurityUtils.getSubject();
+//            Users user = (Users) subject.getPrincipal();
+//            monitorPoint.setCreator(user.getUsername());
             //新增
             monitorPointDao.addMonitorPoint(monitorPoint);
             return;

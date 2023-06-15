@@ -43,7 +43,7 @@ public class FormalPointController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("查询正式档案管理(只已通过)")
-    @RequiresPermissions("archive:formal:all")
+    //@RequiresPermissions("archive:formal:all")
     @PostMapping("/getPage")
     public ResponseInfo getFormalPoint(@RequestBody MonitorPointRequest request, HttpServletRequest servletRequest) {
         log.info("[正式档案管理] --- 查询监测点位建档(不包含已通过) , request= {}", request);

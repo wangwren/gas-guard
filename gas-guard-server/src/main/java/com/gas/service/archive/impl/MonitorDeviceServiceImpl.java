@@ -94,9 +94,9 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
                 throw new CommonException(500, "设备号已存在，不允许新增操作");
             }
 
-            Subject subject = SecurityUtils.getSubject();
-            Users user = (Users) subject.getPrincipal();
-            monitorDevice.setCreator(user.getUsername());
+//            Subject subject = SecurityUtils.getSubject();
+//            Users user = (Users) subject.getPrincipal();
+            //monitorDevice.setCreator(user.getUsername());
             //新增
             monitorDeviceDao.addMonitorDevice(monitorDevice);
             return;
@@ -126,9 +126,9 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
                 throw new CommonException(500, "设备号已存在，不允许新增操作");
             }
 
-            Subject subject = SecurityUtils.getSubject();
-            Users user = (Users) subject.getPrincipal();
-            monitorDevice.setCreator(user.getUsername());
+//            Subject subject = SecurityUtils.getSubject();
+//            Users user = (Users) subject.getPrincipal();
+//            monitorDevice.setCreator(user.getUsername());
             //新增
             monitorDeviceDao.addMonitorDevice(monitorDevice);
             return;

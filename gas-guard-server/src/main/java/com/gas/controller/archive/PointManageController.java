@@ -45,7 +45,7 @@ public class PointManageController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("查询监测点位管理")
-    @RequiresPermissions("archive:point_manage:all")
+    //@RequiresPermissions("archive:point_manage:all")
     @PostMapping("/getPage")
     public ResponseInfo getMonitorPoint(@RequestBody MonitorPointRequest request, HttpServletRequest servletRequest) {
         log.info("[监测点位管理] --- 查询监测点位管理 , request= {}", request);

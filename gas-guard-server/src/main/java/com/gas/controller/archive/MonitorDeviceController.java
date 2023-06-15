@@ -39,7 +39,7 @@ public class MonitorDeviceController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("查询监测设备建档(不包含已通过)")
-    @RequiresPermissions("archive:device:all")
+    //@RequiresPermissions("archive:device:all")
     @PostMapping("/getPage")
     public ResponseInfo getMonitorDevice(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
         log.info("[监测设备建档] --- 查询监测设备建档 , request= {}", request);

@@ -29,7 +29,7 @@ public class WarnTypeController {
     private WarnTypeService warnTypeService;
 
     @ApiOperation("查询预警类型")
-    @RequiresPermissions("param:warn:all")
+    //@RequiresPermissions("param:warn:all")
     @PostMapping("/getPage")
     public ResponseInfo getWarnType(@RequestBody WarnTypeRequest request, HttpServletRequest servletRequest) {
         log.info("[预警类型配置] --- 查询预警类型 , request= {}", request);

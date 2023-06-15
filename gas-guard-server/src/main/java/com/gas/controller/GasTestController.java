@@ -32,7 +32,7 @@ public class GasTestController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("测试接口1")
-    @RequiresPermissions("document:read")
+    //@RequiresPermissions("document:read")
     @PostMapping("/byId")
     public ResponseInfo getGasTestById(@RequestBody GasTestRequest request, HttpServletRequest servletRequest) {
 
@@ -49,7 +49,7 @@ public class GasTestController {
 
 
     @ApiOperation("测试接口2")
-    @RequiresPermissions("document:write")
+    //@RequiresPermissions("document:write")
     @GetMapping("/list")
     public ResponseInfo list(HttpServletRequest servletRequest) {
 
@@ -60,7 +60,7 @@ public class GasTestController {
 
 
     @ApiOperation("分页接口demo")
-    @RequiresPermissions("document:delete")
+    //@RequiresPermissions("document:delete")
     @GetMapping("/page")
     public ResponseInfo pgae(HttpServletRequest servletRequest) {
 

@@ -31,7 +31,7 @@ public class SysConfigController {
     private SysConfigService sysConfigService;
 
     @ApiOperation("查询系统参数")
-    @RequiresPermissions("param:sys:all")
+    //@RequiresPermissions("param:sys:all")
     @PostMapping("/getPage")
     public ResponseInfo getSysConfig(@RequestBody SysConfigRequest request, HttpServletRequest servletRequest) {
         log.info("[系统参数配置] --- 查询系统参数 , request= {}", request);

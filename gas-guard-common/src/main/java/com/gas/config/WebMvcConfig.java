@@ -14,17 +14,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private AuthInterceptor authInterceptor;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/**")
-                //不拦截登录接口
-                .excludePathPatterns("/login")
-                // 开放Swagger文档访问接口
-                .excludePathPatterns("/swagger-ui/**")
-                .excludePathPatterns("/v3/api-docs/**")
-                .excludePathPatterns("/swagger-resources/**")
-                .excludePathPatterns("/webjars/**")
-                .order(Ordered.LOWEST_PRECEDENCE);
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(authInterceptor)
+//                .addPathPatterns("/**")
+//                //不拦截登录接口
+//                .excludePathPatterns("/login")
+//                .order(Ordered.LOWEST_PRECEDENCE);
+//    }
 }

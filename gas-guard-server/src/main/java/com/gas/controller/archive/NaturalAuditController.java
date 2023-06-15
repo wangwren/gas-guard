@@ -41,7 +41,7 @@ public class NaturalAuditController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("查询天然气档案审核(只包含待审核)")
-    @RequiresPermissions("archive:natural_audit:all")
+    //@RequiresPermissions("archive:natural_audit:all")
     @PostMapping("/getPage")
     public ResponseInfo getNaturalAudit(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
         log.info("[天然气档案审核] --- 查询天然气档案审核(只包含待审核) , request= {}", request);

@@ -37,7 +37,7 @@ public class MonitorPointController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("查询监测点位建档(不包含已通过)")
-    @RequiresPermissions("archive:point:all")
+    //@RequiresPermissions("archive:point:all")
     @PostMapping("/getPage")
     public ResponseInfo getMonitorPoint(@RequestBody MonitorPointRequest request, HttpServletRequest servletRequest) {
         log.info("[监测点位建档] --- 查询监测点位建档(不包含已通过) , request= {}", request);

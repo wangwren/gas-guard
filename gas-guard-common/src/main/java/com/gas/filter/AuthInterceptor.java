@@ -39,6 +39,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         Subject currentUser = SecurityUtils.getSubject();
 
         if (!currentUser.isAuthenticated()) {
+            log.info("AuthInterceptor 当前用户没有登录");
             response.getWriter().write(JSONUtil.toJsonStr(ResponseInfo.error(HttpStatus.UNAUTHORIZED)));
             return false;
         }

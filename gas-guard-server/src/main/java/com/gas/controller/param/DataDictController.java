@@ -30,7 +30,7 @@ public class DataDictController {
     private DataDictService dataDictService;
 
     @ApiOperation("查询数据字典")
-    @RequiresPermissions("param:dict:all")
+    //@RequiresPermissions("param:dict:all")
     @PostMapping("/getPage")
     public ResponseInfo getDataDict(@RequestBody DataDictRequest request, HttpServletRequest servletRequest) {
         log.info("[数据字典管理] --- 查询数据字典 , request= {}", request);

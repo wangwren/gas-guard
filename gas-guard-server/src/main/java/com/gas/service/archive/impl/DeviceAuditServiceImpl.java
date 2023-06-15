@@ -38,10 +38,10 @@ public class DeviceAuditServiceImpl implements DeviceAuditService {
         AuditInfo auditInfo = new AuditInfo();
         BeanUtils.copyProperties(request, auditInfo);
 
-        Subject subject = SecurityUtils.getSubject();
-        Users user = (Users) subject.getPrincipal();
+//        Subject subject = SecurityUtils.getSubject();
+//        Users user = (Users) subject.getPrincipal();
 
-        auditInfo.setCreator(user.getUsername());
+        //auditInfo.setCreator(user.getUsername());
         auditInfoDao.add(auditInfo);
 
         MonitorPoint monitorPoint = pointDao.getById(request.getPointId());
@@ -66,8 +66,8 @@ public class DeviceAuditServiceImpl implements DeviceAuditService {
     @Override
     @Transactional
     public void passBatchIds(BatchIdsRequest request) {
-        Subject subject = SecurityUtils.getSubject();
-        Users user = (Users) subject.getPrincipal();
+//        Subject subject = SecurityUtils.getSubject();
+//        Users user = (Users) subject.getPrincipal();
 
         for (Integer id : request.getIds()) {
             AuditInfo auditInfo = new AuditInfo();
@@ -77,7 +77,7 @@ public class DeviceAuditServiceImpl implements DeviceAuditService {
             auditInfo.setDeviceId(monitorDevice.getId());
             auditInfo.setPointId(monitorPoint.getId());
             auditInfo.setAuditStatus("通过");
-            auditInfo.setCreator(user.getUsername());
+            //auditInfo.setCreator(user.getUsername());
 
             auditInfoDao.add(auditInfo);
 
@@ -93,8 +93,8 @@ public class DeviceAuditServiceImpl implements DeviceAuditService {
     @Override
     @Transactional
     public void noPassBatchIds(NoPassBatchIdsRequest request) {
-        Subject subject = SecurityUtils.getSubject();
-        Users user = (Users) subject.getPrincipal();
+//        Subject subject = SecurityUtils.getSubject();
+//        Users user = (Users) subject.getPrincipal();
 
         for (Integer id : request.getIds()) {
             AuditInfo auditInfo = new AuditInfo();
@@ -105,7 +105,7 @@ public class DeviceAuditServiceImpl implements DeviceAuditService {
             auditInfo.setPointId(monitorPoint.getId());
             auditInfo.setAuditStatus("不通过");
             auditInfo.setAuditFeedback(request.getAuditFeedback());
-            auditInfo.setCreator(user.getUsername());
+            //auditInfo.setCreator(user.getUsername());
 
             auditInfoDao.add(auditInfo);
 

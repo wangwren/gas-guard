@@ -29,7 +29,7 @@ public class ShieldConfigController {
     private ShieldConfigService shieldConfigService;
 
     @ApiOperation("查询屏蔽策略")
-    @RequiresPermissions("param:shield:all")
+    //@RequiresPermissions("param:shield:all")
     @PostMapping("/getPage")
     public ResponseInfo getShieldConfig(@RequestBody ShieldConfigRequest request, HttpServletRequest servletRequest) {
         log.info("[屏蔽策略配置] --- 查询屏蔽策略 , request= {}", request);

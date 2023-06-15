@@ -40,7 +40,7 @@ public class WarnInfoController {
 
 
     @ApiOperation("查询正式预警信息")
-    @RequiresPermissions("warn:warn_formal:all")
+    //@RequiresPermissions("warn:warn_formal:all")
     @PostMapping("/getFormalPage")
     public ResponseInfo getWarnFormalInfo(@RequestBody WarnInfoRequest request, HttpServletRequest servletRequest) {
         log.info("[预警管理] --- 查询正式预警信息 , request= {}", request);
@@ -51,7 +51,7 @@ public class WarnInfoController {
     }
 
     @ApiOperation("查询调试预警信息")
-    @RequiresPermissions("warn:warn_debug:all")
+    //@RequiresPermissions("warn:warn_debug:all")
     @PostMapping("/getDebugPage")
     public ResponseInfo getWarnDebugInfo(@RequestBody WarnInfoRequest request, HttpServletRequest servletRequest) {
         log.info("[预警管理] --- 查询调试预警信息 , request= {}", request);

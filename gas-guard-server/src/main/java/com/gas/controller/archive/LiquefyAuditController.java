@@ -40,7 +40,7 @@ public class LiquefyAuditController {
     private FileDownloadUtils downloadUtils;
 
     @ApiOperation("查询液化气档案审核(只包含待审核)")
-    @RequiresPermissions("archive:liquefy_audit:all")
+    //@RequiresPermissions("archive:liquefy_audit:all")
     @PostMapping("/getPage")
     public ResponseInfo getLiquefyAudit(@RequestBody MonitorDeviceRequest request, HttpServletRequest servletRequest) {
         log.info("[液化气档案审核] --- 查询液化气档案审核(只包含待审核) , request= {}", request);
