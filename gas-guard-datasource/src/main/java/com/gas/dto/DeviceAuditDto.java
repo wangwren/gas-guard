@@ -21,6 +21,9 @@ public class DeviceAuditDto implements Serializable {
      */
     private MonitorPoint monitorPoint;
 
+    /**
+     * 预警记录
+     */
     private List<DeviceWarnInfo> deviceWarnInfo;
 
     @Data

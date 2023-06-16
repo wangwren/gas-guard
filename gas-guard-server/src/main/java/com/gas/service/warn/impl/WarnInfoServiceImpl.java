@@ -52,6 +52,14 @@ public class WarnInfoServiceImpl implements WarnInfoService {
     }
 
     @Override
+    public Page<WarnInfoDto> getPage(WarnInfoRequest request) {
+        WarnInfoDto warnInfoDto = this.getWarnInfoDto(request);
+
+        Page<WarnInfoDto> warnInfoDtoPage = warnInfoDao.selectPageAll(warnInfoDto, request.getCurr(), request.getPageSize());
+        return warnInfoDtoPage;
+    }
+
+    @Override
     public WarnInfoDto getWarnInfoDetail(WarnInfoRequest request) {
         return warnInfoDao.selectDtoById(request.getId());
     }

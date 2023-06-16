@@ -87,6 +87,56 @@ public class WarnInfoDao {
         return dtoPage;
     }
 
+    public Page<WarnInfoDto> selectPageAll(WarnInfoDto warnInfoDto, Integer curr, Integer pageSize) {
+        //查询第curr页，每页pageSize条
+        Page<WarnInfo> page = new Page<>(curr,pageSize);
+
+        QueryWrapper<WarnInfo> wrapper = new QueryWrapper<>();
+        wrapper.in(!CollectionUtils.isEmpty(warnInfoDto.getPointIds()), "point_id", warnInfoDto.getPointIds());
+        wrapper.in(!CollectionUtils.isEmpty(warnInfoDto.getDeviceIds()), "device_id", warnInfoDto.getDeviceIds());
+        wrapper.eq(StrUtil.isNotBlank(warnInfoDto.getType()), "type", warnInfoDto.getType());
+        wrapper.eq(StrUtil.isNotBlank(warnInfoDto.getLevel()), "level", warnInfoDto.getLevel());
+        wrapper.eq(StrUtil.isNotBlank(warnInfoDto.getWarnStatus()), "warn_status", warnInfoDto.getWarnStatus());
+        wrapper.ge(warnInfoDto.getCreateTime() != null, "create_time", warnInfoDto.getCreateTime());
+        wrapper.le(warnInfoDto.getEndTime() != null, "create_time", warnInfoDto.getEndTime());
+        wrapper.ge(warnInfoDto.getWarnBeginTime() != null, "warn_time", warnInfoDto.getWarnBeginTime());
+        wrapper.le(warnInfoDto.getWarnEndTime() != null, "warn_time", warnInfoDto.getWarnEndTime());
+
+        wrapper.eq("enable", true);
+        //不包含已处置数据
+        //wrapper.ne("warn_status", GlobalConstants.WAIN_INFO_DEAL_OK);
+
+        Page<WarnInfo> warnInfoPage = mapper.selectPage(page, wrapper);
+        Page<WarnInfoDto> dtoPage = new Page<>();
+        if (CollectionUtils.isEmpty(warnInfoPage.getRecords())) {
+            dtoPage.setTotal(warnInfoPage.getTotal());
+            dtoPage.setSize(warnInfoPage.getSize());
+            dtoPage.setCurrent(warnInfoPage.getCurrent());
+            dtoPage.setPages(warnInfoPage.getPages());
+        }
+
+        List<WarnInfoDto> list = new ArrayList<>();
+        for (WarnInfo record : warnInfoPage.getRecords()) {
+            WarnInfoDto dto = new WarnInfoDto();
+            BeanUtils.copyProperties(record, dto);
+
+            MonitorPoint monitorPoint = pointMapper.selectById(record.getPointId());
+            dto.setMonitorPoint(monitorPoint);
+
+            MonitorDevice monitorDevice = deviceMapper.selectById(record.getDeviceId());
+            dto.setMonitorDevice(monitorDevice);
+
+            list.add(dto);
+        }
+
+        dtoPage.setRecords(list);
+        dtoPage.setTotal(list.size());
+        dtoPage.setSize(list.size());
+        dtoPage.setCurrent(warnInfoPage.getCurrent());
+
+        return dtoPage;
+    }
+
     public WarnInfoDto selectDtoById(Integer id) {
 
         WarnInfoDto warnInfoDto = new WarnInfoDto();
