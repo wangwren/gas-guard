@@ -175,4 +175,28 @@ public class MonitorPointDao {
             pointMapper.updateById(monitorPoint);
         }
     }
+
+    public List<MonitorPoint> selectByPointType(String pointType) {
+        QueryWrapper<MonitorPoint> wrapper = new QueryWrapper<>();
+        wrapper.eq("point_type", pointType);
+
+        List<MonitorPoint> pointList = pointMapper.selectList(wrapper);
+        return pointList;
+    }
+
+    public List<MonitorPoint> selectByNePointType(String pointType) {
+        QueryWrapper<MonitorPoint> wrapper = new QueryWrapper<>();
+        wrapper.ne("point_type", pointType);
+
+        List<MonitorPoint> pointList = pointMapper.selectList(wrapper);
+        return pointList;
+    }
+
+    public List<MonitorPoint> selectByGasType(String gasType) {
+        QueryWrapper<MonitorPoint> wrapper = new QueryWrapper<>();
+        wrapper.eq("gas_type", gasType);
+
+        List<MonitorPoint> pointList = pointMapper.selectList(wrapper);
+        return pointList;
+    }
 }
