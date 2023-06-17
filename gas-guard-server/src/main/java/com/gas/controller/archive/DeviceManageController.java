@@ -141,7 +141,7 @@ public class DeviceManageController {
     }
 
     @ApiOperation("监测设备管理导出")
-    @GetMapping("/download")
+    @PostMapping("/download")
     public void downloadExcel(@RequestBody MonitorDeviceRequest request, HttpServletResponse response) throws IOException {
         String fileName = "monitor_device_manage.xlsx";
         Page<MonitorDeviceDto> monitorDeviceDtoPage = monitorDeviceService.getDeviceManage(request);

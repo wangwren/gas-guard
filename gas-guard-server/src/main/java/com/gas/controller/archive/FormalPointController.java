@@ -126,7 +126,7 @@ public class FormalPointController {
     }
 
     @ApiOperation("正式档案管理导出")
-    @GetMapping("/download")
+    @PostMapping("/download")
     public void downloadExcel(@RequestBody MonitorPointRequest request, HttpServletResponse response) throws IOException {
         String fileName = "monitor_formal_point.xlsx";
         Page<MonitorPoint> monitorPointPage = monitorPointService.getFormalPoint(request);

@@ -171,4 +171,22 @@ public class WarnInfoDao {
         List<WarnInfo> warnInfos = mapper.selectList(wrapper);
         return warnInfos;
     }
+
+    public List<WarnInfoDto> selectList(WarnInfoDto warnInfoDto) {
+        QueryWrapper<WarnInfo> wrapper = new QueryWrapper<>();
+        wrapper.eq(StrUtil.isNotBlank(warnInfoDto.getType()), "type", warnInfoDto.getType());
+        wrapper.ge(warnInfoDto.getWarnBeginTime() != null, "warn_time", warnInfoDto.getWarnBeginTime());
+        wrapper.le(warnInfoDto.getWarnEndTime() != null, "warn_time", warnInfoDto.getWarnEndTime());
+
+        List<WarnInfo> warnInfos = mapper.selectList(wrapper);
+        List<WarnInfoDto> warnInfoDtos = new ArrayList<>();
+        for (WarnInfo warnInfo : warnInfos) {
+            WarnInfoDto dto = new WarnInfoDto();
+            BeanUtils.copyProperties(warnInfo, dto);
+
+            warnInfoDtos.add(dto);
+        }
+
+        return warnInfoDtos;
+    }
 }

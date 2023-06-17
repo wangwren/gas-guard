@@ -52,7 +52,7 @@ public class NaturalAuditController {
     }
 
     @ApiOperation("天然气档案审核导出")
-    @GetMapping("/download")
+    @PostMapping("/download")
     public void downloadExcel(@RequestBody MonitorDeviceRequest request, HttpServletResponse response) throws IOException {
         String fileName = "monitor_natural_audit.xlsx";
         Page<MonitorDeviceDto> monitorDeviceDtoPage = monitorDeviceService.getNaturalAudit(request);

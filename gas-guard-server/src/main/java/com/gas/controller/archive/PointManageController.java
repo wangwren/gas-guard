@@ -97,7 +97,7 @@ public class PointManageController {
     }
 
     @ApiOperation("监测点位建档导出")
-    @GetMapping("/download")
+    @PostMapping("/download")
     public void downloadExcel(@RequestBody MonitorPointRequest request, HttpServletResponse response) throws IOException {
         String fileName = "monitor_point_manage.xlsx";
         Page<MonitorPoint> monitorPointPage = monitorPointService.getPointManage(request);

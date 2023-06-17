@@ -58,7 +58,7 @@ public class WarnInfoQueryController {
     }
 
     @ApiOperation("预警信息导出")
-    @GetMapping("/download")
+    @PostMapping("/download")
     public void download(@RequestBody WarnInfoRequest request, HttpServletResponse response) throws IOException {
         String fileName = "warn_info.xlsx";
         Page<WarnInfoDto> warnFormalInfo = warnInfoService.getPage(request);

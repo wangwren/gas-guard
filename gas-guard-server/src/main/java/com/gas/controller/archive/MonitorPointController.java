@@ -113,7 +113,7 @@ public class MonitorPointController {
     }
 
     @ApiOperation("监测点位建档导出")
-    @GetMapping("/download")
+    @PostMapping("/download")
     public void downloadExcel(@RequestBody MonitorPointRequest request, HttpServletResponse response) throws IOException {
         String fileName = "monitor_point.xlsx";
         Page<MonitorPoint> monitorPointPage = monitorPointService.getMonitorPoint(request);

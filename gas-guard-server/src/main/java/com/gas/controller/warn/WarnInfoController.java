@@ -118,7 +118,7 @@ public class WarnInfoController {
     }
 
     @ApiOperation("预警管理调试数据导出")
-    @GetMapping("debug/download")
+    @PostMapping("debug/download")
     public void downloadDebugExcel(@RequestBody WarnInfoRequest request, HttpServletResponse response) throws IOException {
         String fileName = "warn_info_formal.xlsx";
         Page<WarnInfoDto> warnFormalInfo = warnInfoService.getWarnDebugInfo(request);
