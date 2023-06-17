@@ -259,4 +259,16 @@ public class MonitorDeviceDao {
         List<MonitorDevice> monitorDevices = deviceMapper.selectList(null);
         return monitorDevices;
     }
+
+    public List<MonitorDevice> selectByCond(MonitorDeviceDto deviceDto) {
+        QueryWrapper<MonitorDevice> wrapper = new QueryWrapper<>();
+        wrapper.eq(StrUtil.isNotBlank(deviceDto.getDeviceType()), "device_type", deviceDto.getDeviceType());
+        wrapper.eq(StrUtil.isNotBlank(deviceDto.getDeviceFactory()), "device_factory", deviceDto.getDeviceFactory());
+        wrapper.eq(StrUtil.isNotBlank(deviceDto.getDeviceModel()), "device_model", deviceDto.getDeviceModel());
+        wrapper.ge(deviceDto.getCreateTime() != null, "create_time", deviceDto.getCreateTime());
+        wrapper.le(deviceDto.getEndTime() != null, "create_time", deviceDto.getEndTime());
+
+        List<MonitorDevice> monitorDevices = deviceMapper.selectList(wrapper);
+        return monitorDevices;
+    }
 }

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -128,9 +130,15 @@ public class OverviewServiceImpl implements OverviewService {
 
         for (Map.Entry<String, List<MonitorDevice>> entry : provinces.entrySet()) {
             OverviewDto.DataView dataView = new OverviewDto.DataView();
-            String prefix = "北京市市辖区";
             String key = entry.getKey();
-            key = key.substring(prefix.length());
+            Pattern pattern = Pattern.compile("北京市市辖区(.*?)区");
+            Matcher matcher = pattern.matcher(key);
+
+            if (matcher.find()) {
+                key = matcher.group(1) + "区";
+            } else {
+                continue;
+            }
             String code = ProvinceEnum.getCodeByName(key);
 
             dataView.setCode(code);
