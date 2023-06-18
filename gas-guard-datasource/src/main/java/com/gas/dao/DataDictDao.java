@@ -74,4 +74,12 @@ public class DataDictDao {
         List<DataDict> list = mapper.selectList(wrapper);
         return list;
     }
+
+    public List<DataDict> selectByKey(String dictKey) {
+        QueryWrapper<DataDict> wrapper = new QueryWrapper<>();
+        wrapper.eq("dict_key", dictKey);
+        wrapper.eq("enable", 1);
+        List<DataDict> dataDicts = mapper.selectList(wrapper);
+        return dataDicts;
+    }
 }

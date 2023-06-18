@@ -3,12 +3,14 @@ package com.gas.service.param.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.dao.DataDictDao;
 import com.gas.entity.DataDict;
+import com.gas.exception.CommonException;
 import com.gas.model.DataDictRequest;
 import com.gas.service.param.DataDictService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +50,10 @@ public class DataDictServiceImpl implements DataDictService {
         BeanUtils.copyProperties(request, dataDict);
 
         if (Objects.isNull(dataDict.getId())) {
+            List<DataDict> dataDicts = dataDictDao.selectByKey(dataDict.getDictKey());
+            if (!CollectionUtils.isEmpty(dataDicts)) {
+                throw new CommonException(500,"字典key已存在");
+            }
             //新增
             dataDictDao.addDataDict(dataDict);
         } else {
