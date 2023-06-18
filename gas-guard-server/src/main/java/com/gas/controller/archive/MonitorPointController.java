@@ -1,5 +1,6 @@
 package com.gas.controller.archive;
 
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.ResponseInfo;
 import com.gas.entity.MonitorPoint;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @Api("监测点位建档")
 @RestController
@@ -115,7 +117,7 @@ public class MonitorPointController {
     @ApiOperation("监测点位建档导出")
     @PostMapping("/download")
     public void downloadExcel(@RequestBody MonitorPointRequest request, HttpServletResponse response) throws IOException {
-        String fileName = "monitor_point.xlsx";
+        String fileName = "/data/log/monitor_point_"+ RandomUtil.randomNumbers(6) +".xlsx";
         Page<MonitorPoint> monitorPointPage = monitorPointService.getMonitorPoint(request);
         List<MonitorPoint> records = monitorPointPage.getRecords();
         List<MonitorPointExcel> list = new ArrayList<>();

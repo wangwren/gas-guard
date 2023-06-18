@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,8 +28,7 @@ public class FileDownloadUtils<T> {
                 throw new FileNotFoundException("The file does not exist.");
             }
 
-            response.setContentType("application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            response.setHeader("Content-Disposition", "attachment;filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8"));
             response.setContentLengthLong(file.length());
 
             try(InputStream inputStream = new FileInputStream(file);
@@ -41,7 +41,7 @@ public class FileDownloadUtils<T> {
                     outputStream.write(buffer, 0, bytesRead);
                 }
             } finally {
-                Files.deleteIfExists(path);
+                //Files.deleteIfExists(path);
             }
         } catch (IOException e) {
             // handle exception
