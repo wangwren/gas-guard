@@ -66,4 +66,12 @@ public class DataDictDao {
 
         mapper.updateById(dataDict);
     }
+
+    public List<DataDict> selectByTypeName(String typeName) {
+        QueryWrapper<DataDict> wrapper = new QueryWrapper<>();
+        wrapper.eq("type_name", typeName);
+        wrapper.eq("enable", 1);
+        List<DataDict> list = mapper.selectList(wrapper);
+        return list;
+    }
 }

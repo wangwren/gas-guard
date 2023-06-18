@@ -163,6 +163,14 @@ public class WarnInfoDao {
         warnDealInfoMapper.insert(warnDealInfo);
     }
 
+    public List<WarnDealInfo> selectWarnDealInfoByWarnIds(List<Integer> warnInoIds) {
+
+        QueryWrapper<WarnDealInfo> wrapper = new QueryWrapper<>();
+        wrapper.in("warn_info_id",warnInoIds);
+
+        List<WarnDealInfo> warnDealInfos = warnDealInfoMapper.selectList(wrapper);
+        return warnDealInfos;
+    }
     public List<WarnInfo> selectByDeviceId(Integer id) {
 
         QueryWrapper<WarnInfo> wrapper = new QueryWrapper<>();
@@ -188,5 +196,9 @@ public class WarnInfoDao {
         }
 
         return warnInfoDtos;
+    }
+
+    public List<WarnDealInfo> selectWarnDealInfo() {
+        return warnDealInfoMapper.selectList(null);
     }
 }
