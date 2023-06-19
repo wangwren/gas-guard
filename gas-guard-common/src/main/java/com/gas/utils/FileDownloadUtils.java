@@ -41,7 +41,7 @@ public class FileDownloadUtils<T> {
                     outputStream.write(buffer, 0, bytesRead);
                 }
             } finally {
-                //Files.deleteIfExists(path);
+                Files.deleteIfExists(path);
             }
         } catch (IOException e) {
             // handle exception
