@@ -279,6 +279,11 @@ public class MonitorDeviceDao {
         wrapper.eq(StrUtil.isNotBlank(deviceDto.getArchiveStatus()), "archive_status", deviceDto.getArchiveStatus());
         wrapper.eq(StrUtil.isNotBlank(deviceDto.getDeviceStatus()), "device_status", deviceDto.getDeviceStatus());
 
+        wrapper.eq(StrUtil.isNotBlank(deviceDto.getPointName()), "point_name", deviceDto.getPointName());
+        wrapper.eq(StrUtil.isNotBlank(deviceDto.getOrganName()), "organ_name", deviceDto.getOrganName());
+        wrapper.eq(StrUtil.isNotBlank(deviceDto.getDeviceNo()), "device_no", deviceDto.getDeviceNo());
+        wrapper.eq(StrUtil.isNotBlank(deviceDto.getDeviceName()), "device_name", deviceDto.getDeviceName());
+
         List<MonitorDevice> monitorDevices = deviceMapper.selectList(wrapper);
 
         return monitorDevices;
