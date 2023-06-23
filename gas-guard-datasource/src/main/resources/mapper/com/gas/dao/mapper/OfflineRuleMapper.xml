@@ -6,6 +6,8 @@
 
     <resultMap id="BaseResultMap" type="com.gas.entity.OfflineRule">
             <id property="id" column="id" jdbcType="INTEGER"/>
+            <id property="deviceFactory" column="device_factory" jdbcType="VARCHAR"/>
+            <id property="deviceModel" column="device_model" jdbcType="VARCHAR"/>
             <result property="typeName" column="type_name" jdbcType="VARCHAR"/>
             <result property="offlineTime" column="offline_time" jdbcType="INTEGER"/>
             <result property="enable" column="enable" jdbcType="BIT"/>

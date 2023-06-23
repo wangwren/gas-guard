@@ -22,6 +22,16 @@ public class OfflineRule implements Serializable {
     private Integer id;
 
     /**
+     * 设备厂家
+     */
+    private String deviceFactory;
+
+    /**
+     * 设备类型
+     */
+    private String deviceModel;
+
+    /**
      * 设备类型
      */
     private String typeName;
