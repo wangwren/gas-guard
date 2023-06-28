@@ -150,6 +150,10 @@ public class MonitorPointServiceImpl implements MonitorPointService {
             monitorDevice.setOrganName(monitorPoint.getOrganName());
             monitorDevice.setAddress(monitorPoint.getAddress());
             monitorDevice.setProvince(monitorPoint.getProvince());
+            monitorDevice.setProv(monitorPoint.getProv());
+            monitorDevice.setCity(monitorPoint.getCity());
+            monitorDevice.setArea(monitorPoint.getArea());
+            monitorDevice.setVillage(monitorPoint.getVillage());
             monitorDeviceDao.updateMonitorDevice(monitorDevice);
         }
     }

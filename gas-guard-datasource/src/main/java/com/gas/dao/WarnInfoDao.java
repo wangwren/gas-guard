@@ -203,4 +203,12 @@ public class WarnInfoDao {
     public List<WarnDealInfo> selectWarnDealInfo() {
         return warnDealInfoMapper.selectList(null);
     }
+
+    public void addOrUpdate(WarnInfo warnInfo) {
+        if (warnInfo.getId() == null) {
+            mapper.insert(warnInfo);
+        } else {
+            mapper.updateById(warnInfo);
+        }
+    }
 }

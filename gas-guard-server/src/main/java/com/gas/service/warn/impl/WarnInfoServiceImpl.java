@@ -60,6 +60,14 @@ public class WarnInfoServiceImpl implements WarnInfoService {
     }
 
     @Override
+    public void addOrUpdate(WarnInfoRequest request) {
+        WarnInfo warnInfo = new WarnInfo();
+        BeanUtils.copyProperties(request, warnInfo);
+
+        warnInfoDao.addOrUpdate(warnInfo);
+    }
+
+    @Override
     public WarnInfoDto getWarnInfoDetail(WarnInfoRequest request) {
         return warnInfoDao.selectDtoById(request.getId());
     }

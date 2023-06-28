@@ -36,6 +36,36 @@ public class MonitorDeviceDto implements Serializable {
     private String province;
 
     /**
+     * 省
+     */
+    private String prov;
+
+    /**
+     * 市
+     */
+    private String city;
+
+    /**
+     * 区
+     */
+    private String area;
+
+    /**
+     * 街道
+     */
+    private String village;
+
+    /**
+     * 经度
+     */
+    private String longitude;
+
+    /**
+     * 纬度
+     */
+    private String latitude;
+
+    /**
      * 设备名称
      */
     private String deviceName;

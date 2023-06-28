@@ -17,4 +17,6 @@ public interface WarnInfoService {
     void commitWarnInfo(WarnDealInfoRequest request);
 
     Page<WarnInfoDto> getPage(WarnInfoRequest request);
+
+    void addOrUpdate(WarnInfoRequest request);
 }

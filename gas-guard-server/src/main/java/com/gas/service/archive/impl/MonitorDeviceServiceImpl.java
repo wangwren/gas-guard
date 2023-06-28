@@ -98,6 +98,11 @@ public class MonitorDeviceServiceImpl implements MonitorDeviceService {
                 log.warn("新增监测设备建档，设备号 {} 已存在，不允许新增", monitorDevice.getDeviceNo());
                 throw new CommonException(500, "设备号已存在，不允许新增操作");
             }
+            MonitorPoint monitorPoint = monitorPointDao.getById(monitorDevice.getPointId());
+            monitorDevice.setProv(monitorPoint.getProv());
+            monitorDevice.setCity(monitorPoint.getCity());
+            monitorDevice.setArea(monitorPoint.getArea());
+            monitorDevice.setVillage(monitorPoint.getVillage());
 
 //            Subject subject = SecurityUtils.getSubject();
 //            Users user = (Users) subject.getPrincipal();

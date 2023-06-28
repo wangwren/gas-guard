@@ -58,6 +58,21 @@ public class WarnInfoRequest extends BaseRequest implements Serializable {
      */
     private String warnStatus;
 
+    /**
+     * 数据类型:正式数据；调试数据
+     */
+    private String dataType;
+
+    /**
+     * 预警数据
+     */
+    private String warnData;
+
+    /**
+     * 预警内容
+     */
+    private String warnContent;
+
 
     /**
      * 创建数据开始时间

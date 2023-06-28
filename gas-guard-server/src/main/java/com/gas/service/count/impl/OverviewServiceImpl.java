@@ -1,5 +1,6 @@
 package com.gas.service.count.impl;
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.gas.dao.MonitorDeviceDao;
@@ -9,6 +10,7 @@ import com.gas.entity.MonitorDevice;
 import com.gas.entity.MonitorPoint;
 import com.gas.enums.ProvinceEnum;
 import com.gas.service.count.OverviewService;
+import com.gas.utils.IdGeneratorUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,21 +127,14 @@ public class OverviewServiceImpl implements OverviewService {
         dto.setLiquefyDevice(liquefyDevice);
 
         //行政区划
-        Map<String, List<MonitorDevice>> provinces = deviceList.stream().collect(Collectors.groupingBy(MonitorDevice::getProvince));
+        Map<String, List<MonitorDevice>> provinces = deviceList.stream().collect(Collectors.groupingBy(MonitorDevice::getArea));
         List<OverviewDto.DataView> governDeviceDistributions = new ArrayList<>();
 
         for (Map.Entry<String, List<MonitorDevice>> entry : provinces.entrySet()) {
             OverviewDto.DataView dataView = new OverviewDto.DataView();
             String key = entry.getKey();
-            Pattern pattern = Pattern.compile("北京市市辖区(.*?)区");
-            Matcher matcher = pattern.matcher(key);
 
-            if (matcher.find()) {
-                key = matcher.group(1) + "区";
-            } else {
-                continue;
-            }
-            String code = ProvinceEnum.getCodeByName(key);
+            String code = IdGeneratorUtils.generateId();
 
             dataView.setCode(code);
             dataView.setName(key);

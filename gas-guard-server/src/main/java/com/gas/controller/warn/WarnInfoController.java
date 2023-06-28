@@ -1,5 +1,6 @@
 package com.gas.controller.warn;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.ResponseInfo;
 import com.gas.dto.WarnInfoDto;
@@ -7,6 +8,7 @@ import com.gas.enums.ErrorCodeEnum;
 import com.gas.excel.MonitorPointExcel;
 import com.gas.excel.WarnInfoExcel;
 import com.gas.exception.CommonException;
+import com.gas.model.MonitorPointRequest;
 import com.gas.model.WarnDealInfoRequest;
 import com.gas.model.WarnInfoRequest;
 import com.gas.service.warn.WarnInfoService;
@@ -48,6 +50,16 @@ public class WarnInfoController {
         Page<WarnInfoDto> warnInfoDtoPage = warnInfoService.getWarnFormalInfo(request);
 
         return ResponseInfo.success(warnInfoDtoPage);
+    }
+
+    @ApiOperation("新增或修改预警信息")
+    @PostMapping("/addOrUpdate")
+    public ResponseInfo addOrUpdate(@RequestBody WarnInfoRequest request, HttpServletRequest servletRequest) {
+        log.info("[预警管理] --- 新增或修改预警信息 , request= {}", request);
+
+        warnInfoService.addOrUpdate(request);
+
+        return ResponseInfo.success();
     }
 
     @ApiOperation("查询调试预警信息")
