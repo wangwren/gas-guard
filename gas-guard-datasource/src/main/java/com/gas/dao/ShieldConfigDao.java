@@ -23,6 +23,7 @@ public class ShieldConfigDao {
         wrapper.eq(StrUtil.isNotBlank(shieldConfig.getDeviceName()), "device_name", shieldConfig.getDeviceName());
         wrapper.eq(StrUtil.isNotBlank(shieldConfig.getDeviceNo()), "device_no", shieldConfig.getDeviceNo());
         wrapper.eq(StrUtil.isNotBlank(shieldConfig.getStatus()), "status", shieldConfig.getStatus());
+        wrapper.orderByDesc("create_time");
 
         //查询可用数据
         wrapper.eq("enable", 1);

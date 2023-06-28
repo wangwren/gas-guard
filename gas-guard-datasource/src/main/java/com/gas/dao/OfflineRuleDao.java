@@ -22,6 +22,7 @@ public class OfflineRuleDao {
         wrapper.eq(StrUtil.isNotBlank(offlineRule.getTypeName()), "type_name", offlineRule.getTypeName());
         wrapper.eq(StrUtil.isNotBlank(offlineRule.getDeviceFactory()), "device_factory", offlineRule.getDeviceFactory());
         wrapper.eq(StrUtil.isNotBlank(offlineRule.getDeviceModel()), "device_model", offlineRule.getDeviceModel());
+        wrapper.orderByDesc("create_time");
 
         //查询可用数据
         wrapper.eq("enable", 1);

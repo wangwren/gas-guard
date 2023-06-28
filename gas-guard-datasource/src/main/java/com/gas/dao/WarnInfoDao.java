@@ -51,6 +51,7 @@ public class WarnInfoDao {
         wrapper.le(warnInfoDto.getEndTime() != null, "create_time", warnInfoDto.getEndTime());
         wrapper.ge(warnInfoDto.getWarnBeginTime() != null, "warn_time", warnInfoDto.getWarnBeginTime());
         wrapper.le(warnInfoDto.getWarnEndTime() != null, "warn_time", warnInfoDto.getWarnEndTime());
+        wrapper.orderByDesc("create_time");
 
         wrapper.eq("enable", true);
         //不包含已处置数据
@@ -101,6 +102,7 @@ public class WarnInfoDao {
         wrapper.le(warnInfoDto.getEndTime() != null, "create_time", warnInfoDto.getEndTime());
         wrapper.ge(warnInfoDto.getWarnBeginTime() != null, "warn_time", warnInfoDto.getWarnBeginTime());
         wrapper.le(warnInfoDto.getWarnEndTime() != null, "warn_time", warnInfoDto.getWarnEndTime());
+        wrapper.orderByDesc("create_time");
 
         wrapper.eq("enable", true);
         //不包含已处置数据

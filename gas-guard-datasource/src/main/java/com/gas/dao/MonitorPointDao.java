@@ -33,6 +33,7 @@ public class MonitorPointDao {
         QueryWrapper<MonitorPoint> wrapper = getPointQueryWrapper(monitorPoint);
         //不包含已通过数据
         wrapper.ne("archive_status", GlobalConstants.ARCHIVE_PASS_STATUS);
+        wrapper.orderByDesc("create_time");
 
         Page<MonitorPoint> monitorPointPage = pointMapper.selectPage(page, wrapper);
         return monitorPointPage;
@@ -48,6 +49,7 @@ public class MonitorPointDao {
         QueryWrapper<MonitorPoint> wrapper = getPointQueryWrapper(monitorPoint);
         //不包含已通过数据
         wrapper.eq("archive_status", GlobalConstants.ARCHIVE_PASS_STATUS);
+        wrapper.orderByDesc("create_time");
 
         Page<MonitorPoint> monitorPointPage = pointMapper.selectPage(page, wrapper);
         return monitorPointPage;
@@ -63,6 +65,7 @@ public class MonitorPointDao {
         Page<MonitorPoint> page = new Page<>(curr,pageSize);
 
         QueryWrapper<MonitorPoint> wrapper = getPointQueryWrapper(monitorPoint);
+        wrapper.orderByDesc("create_time");
         Page<MonitorPoint> monitorPointPage = pointMapper.selectPage(page, wrapper);
 
         if (CollectionUtils.isEmpty(monitorPointPage.getRecords())) {
@@ -117,6 +120,7 @@ public class MonitorPointDao {
         wrapper.eq(StrUtil.isNotBlank(monitorPoint.getArchiveStatus()), "archive_status", monitorPoint.getArchiveStatus());
         wrapper.ge(monitorPoint.getCreateTime() != null, "create_time", monitorPoint.getCreateTime());
         wrapper.le(monitorPoint.getEndTime() != null, "create_time", monitorPoint.getEndTime());
+        wrapper.orderByDesc("create_time");
 
         //查询可用数据
         wrapper.eq("enable", 1);
@@ -129,6 +133,7 @@ public class MonitorPointDao {
         Page<MonitorPoint> page = new Page<>(curr,pageSize);
 
         QueryWrapper<MonitorPoint> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("create_time");
         //查询可用数据
         wrapper.eq("enable", 1);
 

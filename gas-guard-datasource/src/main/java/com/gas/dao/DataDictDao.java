@@ -25,6 +25,7 @@ public class DataDictDao {
         wrapper.eq(StrUtil.isNotBlank(dataDict.getTypeName()), "type_name", dataDict.getTypeName());
         wrapper.eq(StrUtil.isNotBlank(dataDict.getDictKey()), "dict_key", dataDict.getDictKey());
         wrapper.eq(StrUtil.isNotBlank(dataDict.getDictValue()), "dict_value", dataDict.getDictValue());
+        wrapper.orderByDesc("create_time");
 
         //查询可用数据
         wrapper.eq("enable", 1);

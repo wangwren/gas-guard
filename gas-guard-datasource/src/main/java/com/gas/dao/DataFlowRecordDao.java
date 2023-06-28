@@ -28,6 +28,7 @@ public class DataFlowRecordDao {
         wrapper.ge(dataFlowRecord.getCollectBeginTime() != null, "collect_time", dataFlowRecord.getCollectBeginTime());
         wrapper.le(dataFlowRecord.getCollectEndTime() != null, "collect_time", dataFlowRecord.getCollectEndTime());
         wrapper.eq("enable", 1);
+        wrapper.orderByDesc("create_time");
 
         Page<DataFlowRecord> dataFlowRecordPage = mapper.selectPage(page, wrapper);
         return dataFlowRecordPage;

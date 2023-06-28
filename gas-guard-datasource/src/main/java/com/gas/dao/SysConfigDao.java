@@ -25,6 +25,7 @@ public class SysConfigDao {
         wrapper.eq(StrUtil.isNotBlank(sysConfig.getSysName()), "sys_name", sysConfig.getSysName());
         wrapper.eq(StrUtil.isNotBlank(sysConfig.getSysKey()), "sys_key", sysConfig.getSysKey());
         wrapper.eq(StrUtil.isNotBlank(sysConfig.getSysValue()), "sys_value", sysConfig.getSysValue());
+        wrapper.orderByDesc("create_time");
 
         //查询可用数据
         wrapper.eq("enable", 1);

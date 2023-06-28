@@ -65,7 +65,7 @@ public class NaturalAuditController {
             list.add(monitorDeviceExcel);
         }
 
-        downloadUtils.downloadExcel(fileName, MonitorPointExcel.class, list, response);
+        downloadUtils.downloadExcel(fileName, MonitorDeviceExcel.class, list, response);
     }
 
     /**

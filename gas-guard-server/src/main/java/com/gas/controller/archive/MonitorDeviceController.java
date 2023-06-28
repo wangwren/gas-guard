@@ -134,9 +134,10 @@ public class MonitorDeviceController {
     }
 
     @ApiOperation("监测设备建档导出")
-    @PostMapping("/download")
-    public void downloadExcel(@RequestBody MonitorDeviceRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/download")
+    public void downloadExcel(/*@RequestBody MonitorDeviceRequest request, */HttpServletResponse response) throws IOException {
         String fileName = "monitor_device.xlsx";
+        MonitorDeviceRequest request = new MonitorDeviceRequest();
         Page<MonitorDeviceDto> monitorDeviceDtoPage = monitorDeviceService.getMonitorDevice(request);
         List<MonitorDeviceDto> records = monitorDeviceDtoPage.getRecords();
         List<MonitorDeviceExcel> list = new ArrayList<>();
@@ -147,6 +148,6 @@ public class MonitorDeviceController {
             list.add(monitorDeviceExcel);
         }
 
-        downloadUtils.downloadExcel(fileName, MonitorPointExcel.class, list, response);
+        downloadUtils.downloadExcel(fileName, MonitorDeviceExcel.class, list, response);
     }
 }

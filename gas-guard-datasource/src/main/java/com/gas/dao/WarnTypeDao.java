@@ -24,6 +24,7 @@ public class WarnTypeDao {
         wrapper.eq(StrUtil.isNotBlank(warnType.getBigType()), "big_type", warnType.getBigType());
         wrapper.eq(StrUtil.isNotBlank(warnType.getLevel()), "level", warnType.getLevel());
         wrapper.eq(StrUtil.isNotBlank(warnType.getStatus()), "status", warnType.getStatus());
+        wrapper.orderByDesc("create_time");
 
         //查询可用数据
         wrapper.eq("enable", 1);

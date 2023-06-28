@@ -58,6 +58,6 @@ public class WarnFlowRecordController {
             list.add(excel);
         }
 
-        downloadUtils.downloadExcel(fileName, MonitorPointExcel.class, list, response);
+        downloadUtils.downloadExcel(fileName, WarnFlowRecordExcel.class, list, response);
     }
 }

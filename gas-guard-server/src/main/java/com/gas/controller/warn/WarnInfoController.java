@@ -90,9 +90,9 @@ public class WarnInfoController {
     @ApiOperation("预警信息提交反馈")
     @PostMapping("/commitWarnInfo")
     public ResponseInfo commitWarnInfo(@RequestBody @Validated WarnDealInfoRequest request, HttpServletRequest servletRequest) {
-        log.info("[预警管理] --- 预警信息确认 , request= {}", request);
+        log.info("[预警管理] --- 预警信息提交反馈 , request= {}", request);
         if (Objects.equals(request.getBlockPolicy(), "启用") && Objects.isNull(request.getBlockTime())) {
-            log.warn("[预警管理] --- 预警信息确认--屏蔽策略启用，屏蔽时长不能为空");
+            log.warn("[预警管理] --- 预警信息提交反馈--屏蔽策略启用，屏蔽时长不能为空");
             throw new CommonException(500,"屏蔽策略启用，屏蔽时长不能为空");
         }
         warnInfoService.commitWarnInfo(request);
@@ -114,7 +114,7 @@ public class WarnInfoController {
             list.add(warnInfoExcel);
         }
 
-        downloadUtils.downloadExcel(fileName, MonitorPointExcel.class, list, response);
+        downloadUtils.downloadExcel(fileName, WarnInfoExcel.class, list, response);
     }
 
     @ApiOperation("预警管理调试数据导出")
@@ -131,6 +131,6 @@ public class WarnInfoController {
             list.add(warnInfoExcel);
         }
 
-        downloadUtils.downloadExcel(fileName, MonitorPointExcel.class, list, response);
+        downloadUtils.downloadExcel(fileName, WarnInfoExcel.class, list, response);
     }
 }

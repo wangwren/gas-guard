@@ -54,6 +54,7 @@ public class MonitorDeviceDao {
         QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
         //不包含已通过数据
         wrapper.ne("archive_status", GlobalConstants.ARCHIVE_PASS_STATUS);
+        wrapper.orderByDesc("create_time");
         //查设备
         Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
 
@@ -90,6 +91,7 @@ public class MonitorDeviceDao {
         QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
         //只查询待审核数据
         wrapper.eq("archive_status", GlobalConstants.ARCHIVE_CHECK_STATUS);
+        wrapper.orderByDesc("create_time");
         //查设备
         Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
 
@@ -109,6 +111,7 @@ public class MonitorDeviceDao {
         QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
         //只查询待审核数据
         wrapper.eq("archive_status", GlobalConstants.ARCHIVE_CHECK_STATUS);
+        wrapper.orderByDesc("create_time");
         //查设备
         Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
 
@@ -128,6 +131,7 @@ public class MonitorDeviceDao {
         QueryWrapper<MonitorDevice> wrapper = getDeviceQueryWrapper(monitorDeviceDto);
         //只查询待审核数据
         wrapper.eq("archive_status", GlobalConstants.ARCHIVE_CHECK_STATUS);
+        wrapper.orderByDesc("create_time");
         //查设备
         Page<MonitorDevice> monitorDevicePage = deviceMapper.selectPage(page, wrapper);
 
@@ -153,6 +157,7 @@ public class MonitorDeviceDao {
         wrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getArchiveStatus()), "archive_status", monitorDeviceDto.getArchiveStatus());
         wrapper.ge(monitorDeviceDto.getCreateTime() != null, "create_time", monitorDeviceDto.getCreateTime());
         wrapper.le(monitorDeviceDto.getEndTime() != null, "create_time", monitorDeviceDto.getEndTime());
+        wrapper.orderByDesc("create_time");
 
         //查询可用数据
         wrapper.eq("enable", 1);
@@ -180,6 +185,7 @@ public class MonitorDeviceDao {
             queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getGasCompany()), "gas_company", monitorDeviceDto.getGasCompany());
             queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getGasType()), "gas_type", monitorDeviceDto.getGasType());
             queryWrapper.eq(StrUtil.isNotBlank(monitorDeviceDto.getUserType()), "user_type", monitorDeviceDto.getUserType());
+            queryWrapper.orderByDesc("create_time");
             if (natural) {
                 queryWrapper.eq("gas_type", "天然气");
             }

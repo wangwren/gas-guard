@@ -71,6 +71,6 @@ public class WarnInfoQueryController {
             list.add(warnInfoExcel);
         }
 
-        downloadUtils.downloadExcel(fileName, MonitorPointExcel.class, list, response);
+        downloadUtils.downloadExcel(fileName, WarnInfoExcel.class, list, response);
     }
 }
