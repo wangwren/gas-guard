@@ -8,6 +8,7 @@ import com.gas.model.LoginResponse;
 import com.gas.service.UsersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api("用户相关接口")
 @RestController
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -30,6 +32,7 @@ public class UserController {
     @ApiOperation("登录接口")
     @PostMapping("/login")
     public ResponseInfo login(@RequestBody @Validated LoginRequest request) {
+        log.info("发起登录 request={}", request);
 
         Subject subject = SecurityUtils.getSubject();
         try {
