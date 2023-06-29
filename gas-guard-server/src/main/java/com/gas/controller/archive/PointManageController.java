@@ -1,5 +1,6 @@
 package com.gas.controller.archive;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.ResponseInfo;
 import com.gas.entity.MonitorPoint;
@@ -59,6 +60,9 @@ public class PointManageController {
     @PostMapping("/addOrUpdate")
     public ResponseInfo addOrUpdate(@RequestBody MonitorPointRequest request, HttpServletRequest servletRequest) {
         log.info("[监测点位管理] --- 新增或修改监测点位管理 , request= {}", request);
+        if (StrUtil.isBlank(request.getProvince())) {
+            request.setProvince(request.getProv() + request.getCity() + request.getArea() + request.getVillage());
+        }
 
         //任何状态都可修改
         monitorPointService.addOrUpdateAll(request);
