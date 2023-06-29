@@ -4,10 +4,18 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.dao.mapper.WarnTypeMapper;
+import com.gas.dto.WarnInfoDto;
+import com.gas.dto.WarnTypeDto;
 import com.gas.entity.DataDict;
+import com.gas.entity.WarnInfo;
 import com.gas.entity.WarnType;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class WarnTypeDao {
@@ -15,7 +23,7 @@ public class WarnTypeDao {
     @Autowired
     private WarnTypeMapper mapper;
 
-    public Page<WarnType> selectPage(WarnType warnType, Integer curr, Integer pageSize) {
+    public Page<WarnTypeDto> selectPage(WarnType warnType, Integer curr, Integer pageSize) {
         //查询第curr页，每页pageSize条
         Page<WarnType> page = new Page<>(curr,pageSize);
 
@@ -31,7 +39,27 @@ public class WarnTypeDao {
 
 
         Page<WarnType> warnTypePage = mapper.selectPage(page, wrapper);
-        return warnTypePage;
+        List<WarnTypeDto> warnTypeDtos = new ArrayList<>();
+        if (CollectionUtils.isEmpty(warnTypePage.getRecords())) {
+            return null;
+        }
+        List<WarnType> records = warnTypePage.getRecords();
+        for (WarnType record : records) {
+            WarnTypeDto warnTypeDto = new WarnTypeDto();
+            BeanUtils.copyProperties(record, warnTypeDto);
+            String notifi = record.getNotifi().substring(1, record.getNotifi().length() - 1); // 去除开始和结束的 [ ]
+            warnTypeDto.setNotifi(notifi.split(","));
+
+            warnTypeDtos.add(warnTypeDto);
+        }
+
+        Page<WarnTypeDto> warnTypeDtoPage = new Page<>();
+        warnTypeDtoPage.setRecords(warnTypeDtos);
+        warnTypeDtoPage.setSize(warnTypePage.getSize());
+        warnTypeDtoPage.setTotal(warnTypePage.getTotal());
+        warnTypeDtoPage.setPages(warnTypePage.getPages());
+        warnTypeDtoPage.setCurrent(warnTypePage.getCurrent());
+        return warnTypeDtoPage;
     }
 
     public void addWarnType(WarnType warnType) {
@@ -42,13 +70,20 @@ public class WarnTypeDao {
         mapper.updateById(warnType);
     }
 
-    public WarnType getById(Integer id) {
-        return mapper.selectById(id);
+    public WarnTypeDto getById(Integer id) {
+        WarnType warnType = mapper.selectById(id);
+        WarnTypeDto warnTypeDto = new WarnTypeDto();
+        BeanUtils.copyProperties(warnType, warnTypeDto);
+        String notifi = warnType.getNotifi().substring(1, warnType.getNotifi().length() - 1); // 去除开始和结束的 [ ]
+        warnTypeDto.setNotifi(notifi.split(","));
+        return warnTypeDto;
     }
 
     public void delWarnType(Integer id) {
-        WarnType warnType = this.getById(id);
-        warnType.setEnable(false);
+        WarnTypeDto warnTypeDto = this.getById(id);
+        warnTypeDto.setEnable(false);
+        WarnType warnType = new WarnType();
+        BeanUtils.copyProperties(warnTypeDto, warnType);
         mapper.updateById(warnType);
     }
 }

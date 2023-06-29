@@ -19,7 +19,7 @@ public class WarnTypeRequest extends BaseRequest implements Serializable {
 
     private String whenab;
 
-    private String notifi;
+    private String[] notifi;
 
     private String content;
 }

@@ -2,6 +2,7 @@ package com.gas.controller.param;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.common.ResponseInfo;
+import com.gas.dto.WarnTypeDto;
 import com.gas.entity.WarnType;
 import com.gas.enums.ErrorCodeEnum;
 import com.gas.model.WarnTypeRequest;
@@ -34,7 +35,7 @@ public class WarnTypeController {
     public ResponseInfo getWarnType(@RequestBody WarnTypeRequest request, HttpServletRequest servletRequest) {
         log.info("[预警类型配置] --- 查询预警类型 , request= {}", request);
 
-        Page<WarnType> warnTypePage = warnTypeService.getWarnType(request);
+        Page<WarnTypeDto> warnTypePage = warnTypeService.getWarnType(request);
 
         return ResponseInfo.success(warnTypePage);
     }
@@ -58,7 +59,7 @@ public class WarnTypeController {
             return ResponseInfo.error(ErrorCodeEnum.INVALID_PARAM_VALUE);
         }
 
-        WarnType warnType = warnTypeService.getById(request.getId());
+        WarnTypeDto warnType = warnTypeService.getById(request.getId());
         return ResponseInfo.success(warnType);
     }
 

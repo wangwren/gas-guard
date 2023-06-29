@@ -2,6 +2,7 @@ package com.gas.service.param.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gas.dao.WarnTypeDao;
+import com.gas.dto.WarnTypeDto;
 import com.gas.entity.WarnType;
 import com.gas.model.WarnTypeRequest;
 import com.gas.service.param.WarnTypeService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 @Service
@@ -19,11 +21,11 @@ public class WarnTypeServiceImpl implements WarnTypeService {
     private WarnTypeDao warnTypeDao;
 
     @Override
-    public Page<WarnType> getWarnType(WarnTypeRequest request) {
+    public Page<WarnTypeDto> getWarnType(WarnTypeRequest request) {
         WarnType warnType = new WarnType();
         BeanUtils.copyProperties(request, warnType);
 
-        Page<WarnType> warnTypePage = warnTypeDao.selectPage(warnType, request.getCurr(), request.getPageSize());
+        Page<WarnTypeDto> warnTypePage = warnTypeDao.selectPage(warnType, request.getCurr(), request.getPageSize());
 
         return warnTypePage;
     }
@@ -33,6 +35,7 @@ public class WarnTypeServiceImpl implements WarnTypeService {
     public void addOrUpdate(WarnTypeRequest request) {
         WarnType warnType = new WarnType();
         BeanUtils.copyProperties(request, warnType);
+        warnType.setNotifi(Arrays.toString(request.getNotifi()));
 
         if (Objects.isNull(warnType.getId())) {
             //新增
@@ -44,7 +47,7 @@ public class WarnTypeServiceImpl implements WarnTypeService {
     }
 
     @Override
-    public WarnType getById(Integer id) {
+    public WarnTypeDto getById(Integer id) {
         return warnTypeDao.getById(id);
     }
 
